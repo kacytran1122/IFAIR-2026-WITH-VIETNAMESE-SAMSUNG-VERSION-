@@ -227,7 +227,7 @@ html, body {
   background:
     radial-gradient(circle at 30% 30%, #fff 35%, #000 36% 45%, #fff 46%);
   border-radius:50%;
-  transform:translate(-50%,-50%) scale(70);
+  transform:translate(-50%,-50%) scale(0);
   z-index:9999;
   transition:transform .7s cubic-bezier(.6,0,.2,1);
 }
@@ -352,18 +352,17 @@ function startScene() {
     transitionBall.classList.add("active");
   }, 8000);
 
-  setTimeout(() => {
-    window.location.href = "scene3.html";
-  }, 12000);
-}
+  transitionBall.addEventListener("transitionend", () => {
+  window.location.href = "scene3.html";
+});
+
 
 
 /* ================= AUTO PLAY SEQUENCE ================= */
-requestAnimationFrame(() => {
-  setTimeout(() => {
-    startScene();
-  }, 300);
+window.addEventListener("load", () => {
+  setTimeout(startScene, 600);
 });
+
 
 
   /* hide click hint immediately */
@@ -374,4 +373,5 @@ requestAnimationFrame(() => {
 
 </body>
 </html>
+
 
