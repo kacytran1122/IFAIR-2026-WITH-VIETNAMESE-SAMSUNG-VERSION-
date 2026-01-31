@@ -19,25 +19,32 @@
 
 *{ box-sizing:border-box; }
 
-body{
-  margin:0;
-  height:100vh;
-  display:grid;
-  place-items:center;
-  background:#05070f;
-  font-family:system-ui;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #05070f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
+
 
 /* ================= SCENE ================= */
 .scene{
-  width: min(420px, 100vw);
-  height: min(760px, 100svh);
+  width: 100vw;
+  max-width: 430px;           /* Samsung phone width */
+  height: 100svh;
+  max-height: 900px;          /* safe for tall devices */
   aspect-ratio: 9 / 16;
+
   position: relative;
   overflow: hidden;
-  border-radius: 0; /* phones = no rounded frame */
   background: var(--grass);
 }
+
 
 
 
@@ -81,13 +88,26 @@ body{
 
 
 .center-line{
-  width: 3px;
+  position:absolute;
+  left:50%;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:rgba(255,255,255,.7);
+  transform:translateX(-50%);
 }
 
 .center-circle{
-  width: 120px;
-  height: 120px;
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:120px;
+  height:120px;
+  border:3px solid rgba(255,255,255,.7);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
 }
+
 
 
 /* ===== GOAL ===== */
@@ -112,8 +132,11 @@ body{
 
 /* ===== PLAYERS ===== */
 .player{
+  position: absolute;
   top: 58%;
+  transform: translateY(-50%);
 }
+
 
 .player.dragon{ left: 20%; }
 .player.panda{ left: 60%; }
@@ -144,15 +167,6 @@ body{
 }
 .patch.left{ left:12px; } .patch.right{ right:12px; }
 
-body{
-  margin:0;
-  min-height:100svh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#05070f;
-  overflow:hidden;
-}
 
 
 .leg{ width:14px; height:34px; background:#123; border-radius:8px; margin-top:-6px; }
@@ -213,31 +227,40 @@ body{
   background:
     radial-gradient(circle at 30% 30%, #fff 35%, #000 36% 45%, #fff 46%);
   border-radius:50%;
-  transform:translate(-50%,-50%) scale(55);
+  transform:translate(-50%,-50%) scale(70);
   z-index:9999;
   transition:transform .7s cubic-bezier(.6,0,.2,1);
 }
 
 #ball-transition.active{
-  transform:translate(-50%,-50%) scale(60);
+  transform:translate(-50%,-50%) scale(90);
 }
-@media (max-width: 430px) and (min-aspect-ratio: 19/9) {
+@media (max-width: 430px) and (max-aspect-ratio: 9/16) {
 
   .scene{
-    border-radius:12px;
-  }
-
-  .player{
-    transform:translateY(-50%) scale(0.85);
+    border-radius: 0;
   }
 
   .goal{
-    width:90px;
-    height:120px;
+    width: 88px;
+    height: 120px;
   }
 
-  .stands{
-    height:200px;
+  .player{
+    transform: translateY(-50%) scale(0.85);
+  }
+
+  .speech.story{
+    font-size: 13px;
+  }
+}
+
+@media (orientation: portrait) {
+  .scene {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
   }
 }
 
@@ -285,7 +308,7 @@ body{
   </div>
 </div>
 
-<div id="sports-transition"></div>
+<div id="ball-transition"></div>
 
 <script>
 /* ================= CROWD SETUP ================= */
@@ -345,7 +368,7 @@ window.addEventListener("load", () => {
 });
 </script>
 
-<div id="ball-transition"></div>
+
 
 </body>
 </html>
