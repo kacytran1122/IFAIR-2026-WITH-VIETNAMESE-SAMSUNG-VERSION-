@@ -1,10 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Scene 2 – Vietnamese Sports</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="devices.css">
 
 <style>
 :root{
@@ -30,16 +30,14 @@ body{
 
 /* ================= SCENE ================= */
 .scene{
+  width:900px;
+  max-width:95vw;
+  aspect-ratio:16/9;
   position:relative;
-  width:100%;
-  height:100svh;     /* full mobile-safe height */
-  max-width:none;    /* CRITICAL */
-  aspect-ratio:auto; /* CRITICAL */
   overflow:hidden;
-  border-radius:0;   /* phones go edge-to-edge */
+  border-radius:18px;
   background:var(--grass);
 }
-
 
 /* ===== STANDS ===== */
 .stands{
@@ -94,7 +92,7 @@ body{
 .ball{
   position:absolute; width:22px; height:22px; background:#fff; border-radius:50%;
   left:50%; top:50%; transform:translate(-50%,-50%);
-  transition:left .15s ease;
+  transition:left .9s ease;
 }
 
 /* ===== PLAYERS ===== */
@@ -103,8 +101,7 @@ body{
   display:flex; flex-direction:column; align-items:center;
   top:50%; transform:translateY(-50%);
 }
-.player.dragon{ left:260px; cursor:default; pointer-events:none; }
-
+.player.dragon{ left:260px; cursor:pointer; }
 .player.panda{ left:520px; }
 
 .face{ width:64px; height:56px; border-radius:50% 50% 40% 40%; position:relative; }
@@ -194,6 +191,75 @@ body{
   transform:translate(-50%,-50%) scale(90);
 }
 
+/* =========================
+   SAMSUNG / TALL ANDROID FIX
+========================= */
+@media (max-width: 430px) and (min-aspect-ratio: 9/18) {
+
+  body{
+    height:100svh;
+    place-items:stretch;
+  }
+
+  /* Scene fills screen vertically */
+  .scene{
+    width:100%;
+    height:100svh;
+    aspect-ratio:auto;
+    border-radius:0;
+  }
+
+  /* Stands take less height */
+  .stands{
+    height:180px;
+    padding:10px;
+  }
+
+  /* Pitch adapts */
+  .pitch{
+    height:auto;
+    top:180px;
+    bottom:0;
+  }
+
+  /* Players reposition */
+  .player{
+    top:60%;
+  }
+
+  .player.dragon{ left:14vw; }
+  .player.panda{ left:48vw; }
+
+  /* Goal scales */
+  .goal{
+    width:90px;
+    height:120px;
+  }
+
+  /* Speech bubbles fit screen */
+  .speech.story{
+    width:92vw;
+    left:50%;
+    top:20svh;
+    transform:translateX(-50%);
+    font-size:14px;
+    padding:16px;
+  }
+
+  .speech.hint{
+    width:220px;
+    top:22svh;
+    font-size:12px;
+  }
+
+  /* CTA button fits */
+  .cta{
+    width:100%;
+    font-size:13px;
+    padding:10px 16px;
+  }
+}
+
 
 </style>
 </head>
@@ -241,7 +307,7 @@ body{
 <div id="sports-transition"></div>
 
 <script>
-/* ================= CROWD ================= */
+/* ================= CROWD SETUP ================= */
 const stands = document.getElementById("stands");
 for (let r = 0; r < 5; r++) {
   const row = document.createElement("div");
@@ -255,55 +321,51 @@ for (let r = 0; r < 5; r++) {
   stands.appendChild(row);
 }
 
-/* ================= AUTO SEQUENCE ================= */
-const ball  = document.getElementById("ball");
-const hint  = document.getElementById("hint");
+/* ================= ELEMENTS ================= */
+const ball = document.getElementById("ball");
+const hint = document.getElementById("hint");
 const story = document.getElementById("story");
-const fans  = document.querySelectorAll(".fan");
+const transitionBall = document.getElementById("ball-transition");
 
-/* timing (easy to tweak) */
-const START_DELAY      = 1200;  // before kick
-const STORY_DELAY      = 900;   // after kick
-const TRANSITION_DELAY = 2600;  // after story
-const REDIRECT_DELAY   = 650;
+/* ================= AUTO PLAY SEQUENCE ================= */
+window.addEventListener("load", () => {
 
-/* auto-play */
-setTimeout(() => {
-  // hide hint
+  /* hide click hint immediately */
   hint.style.display = "none";
 
-  // kick ball
-  ball.style.left = "95%";
+  /* STEP 1 — kick ball */
+  setTimeout(() => {
+    const pitch = document.querySelector(".pitch");
+    ball.style.left = (pitch.clientWidth - 40) + "px";
 
-  // crowd cheer
-  fans.forEach(f => {
-    if (Math.random() < 0.65) {
-      f.classList.add("cheer");
-      setTimeout(() => f.classList.remove("cheer"), 600);
-    }
-  });
 
-  // show story
+    /* crowd cheer */
+    document.querySelectorAll(".fan").forEach(f => {
+      if (Math.random() < 0.65) {
+        f.classList.add("cheer");
+        setTimeout(() => f.classList.remove("cheer"), 600);
+      }
+    });
+  }, 1200);
+
+  /* STEP 2 — show story */
   setTimeout(() => {
     story.classList.add("show");
-  }, STORY_DELAY);
+  }, 3000);
 
-  // transition to next scene
+  /* STEP 3 — transition to Scene 3 */
   setTimeout(() => {
-    const transition = document.getElementById("ball-transition");
-    transition.classList.add("active");
+    transitionBall.classList.add("active");
+  }, 5200);
 
-    setTimeout(() => {
-      window.location.href = "scene3.html";
-    }, REDIRECT_DELAY);
+  /* STEP 4 — redirect */
+  setTimeout(() => {
+    window.location.href = "scene3.html";
+  }, 5850);
 
-  }, TRANSITION_DELAY);
-
-}, START_DELAY);
+});
 </script>
-
 <div id="ball-transition"></div>
 
 </body>
-</html>
-
+</html>\
