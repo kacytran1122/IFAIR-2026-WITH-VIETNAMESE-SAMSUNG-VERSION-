@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Golden Dragon — Childhood Sports</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<style>
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  height:100svh;
+  display:grid;
+  place-items:center;
+  background:#0a0e14;
+  overflow:hidden;
+  font-family:system-ui;
+}
+
+/* ================= SCENE ================= */
+.scene{
+  width:900px;
+  max-width:95vw;
+  aspect-ratio:16/9;
+  position:relative;
+  overflow:hidden;
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(200,220,255,.18), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(120,160,200,.18), transparent 50%),
+    linear-gradient(180deg,#1b2a38,#0b0f14 70%);
+}
+.scene::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  box-shadow:inset 0 0 150px rgba(0,0,0,.75);
+  pointer-events:none;
+}
+
+/* ================= DRAGON ================= */
+.dragon{
+  position:absolute;
+  left:24px;
+  bottom:24px;
+  width:160px;
+  z-index:6;
+  pointer-events:none;
+  animation:dragonPulse 2.4s ease-in-out infinite;
+  filter:drop-shadow(0 0 14px rgba(255,210,120,.45));
+}
+
+
+
+@keyframes dragonPulse{
+  0%,100%{ transform:scale(1); }
+  50%{ transform:scale(1.05); }
+}
+
+.head{
+  width:130px;
+  height:110px;
+  background:linear-gradient(145deg,#d4a017,#b8860b);
+  border-radius:60% 60% 50% 50%;
+  position:relative;
+  box-shadow:0 6px 14px rgba(0,0,0,.4);
+}
+.horn{
+  position:absolute;
+  width:10px;
+  height:36px;
+  background:#f5d76e;
+  border-radius:6px;
+  top:-28px;
+}
+.horn.left{ left:30px; transform:rotate(-10deg); }
+.horn.right{ right:30px; transform:rotate(10deg); }
+.eye{
+  width:10px;
+  height:10px;
+  background:#2b1a0f;
+  border-radius:50%;
+  position:absolute;
+  top:44px;
+}
+.eye.left{ left:36px; }
+.eye.right{ right:36px; }
+.snout{
+  width:60px;
+  height:38px;
+  background:#f2c94c;
+  border-radius:20px;
+  position:absolute;
+  left:50%;
+  top:60px;
+  transform:translateX(-50%);
+}
+.nostril{
+  width:6px;
+  height:6px;
+  background:#3a220f;
+  border-radius:50%;
+  position:absolute;
+  top:72px;
+}
+.nostril.left{ left:58px; }
+.nostril.right{ left:74px; }
+.mouth{
+  position:absolute;
+  right:-8px;
+  top:74px;
+  width:8px;
+  height:8px;
+}
+
+/* ================= FIRE ================= */
+.fire-core,.fire-glow,.fire-ember{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+.fire-core{
+  width:22px;
+  height:22px;
+  background:radial-gradient(circle,#fff6cc,#ff9c00,#ff3d00);
+  animation:fireMove 1.2s ease-out forwards;
+}
+.fire-glow{
+  width:46px;
+  height:46px;
+  background:radial-gradient(circle,
+    rgba(255,200,120,.7),
+    rgba(255,120,0,.4),
+    transparent 70%);
+  filter:blur(8px);
+  animation:fireMove 1.35s ease-out forwards;
+}
+.fire-ember{
+  width:6px;
+  height:6px;
+  background:#ffe2a6;
+  animation:emberMove 1.8s linear forwards;
+}
+@keyframes fireMove{
+  from{ transform:translate(0,0); opacity:1; }
+  to{ transform:translate(var(--dx),var(--dy)); opacity:0; }
+}
+@keyframes emberMove{
+  from{ transform:translate(0,0); opacity:1; }
+  to{ transform:translate(calc(var(--dx)*1.2),calc(var(--dy)*1.2)); opacity:0; }
+}
+
+/* ================= IMAGES ================= */
+.memories{
+  position:absolute;
+  top:40%;
+  left:50%;
+  transform:translateX(-50%) scale(.95);
+  display:flex;
+  gap:28px;
+  opacity:0;
+  transition:opacity 1s ease, transform 1s ease;
+}
+.memories.show{
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+}
+.memory{ text-align:center; }
+.memory img{
+  width:150px;
+  height:110px;
+  border-radius:14px;
+  object-fit:cover;
+  box-shadow:0 14px 36px rgba(0,0,0,.45);
+}
+.caption{
+  margin-top:10px;
+  font-family:"Cormorant Garamond",serif;
+  font-size:15px;
+  letter-spacing:.05em;
+  color:#eef3ff;
+}
+
+/* ================= SPEECH ================= */
+.speech{
+  max-height:55svh;
+  overflow-y:auto;
+  overscroll-behavior: contain; /* FIX 2 */
+  box-sizing:border-box;        /* FIX 2 */
+
+  position:absolute;
+  left:210px;
+  bottom:220px;
+  width:550px;
+  padding:20px 24px;
+  background:rgba(245,250,255,.96);
+  border-radius:22px;
+  font-family:"Cormorant Garamond","Playfair Display",serif;
+  font-size:17px;
+  line-height:1.55;
+  color:#1e2a36;
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .8s ease, transform .8s ease;
+}
+
+.speech.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.speech::after{
+  content:"";
+  position:absolute;
+  left:-18px;
+  bottom:40px;
+  border-width:10px 18px 10px 0;
+  border-style:solid;
+  border-color:transparent rgba(245,250,255,.96) transparent transparent;
+}
+/* =========================
+   SAMSUNG / TALL ANDROID FIX
+========================= */
+@media (max-width: 430px) and (min-aspect-ratio: 9/18) {
+
+  /* Let scene fill the phone naturally */
+  .scene{
+    width:100%;
+    height:100svh;
+    aspect-ratio:auto;
+    border-radius:0;
+  }
+
+  /* Reflow memories */
+  .memories{
+    top:48%;
+    gap:14px;
+    transform:translateX(-50%) scale(.9);
+  }
+
+  .memory img{
+    width:110px;
+    height:84px;
+  }
+
+  .caption{
+    font-size:13px;
+  }
+
+  /* Speech bubble — THIS IS THE KEY FIX */
+  .speech{
+    left:50%;
+    bottom:10svh;
+    width:92vw;
+    max-width:92vw;
+    padding:16px 18px;
+    font-size:15px;
+    line-height:1.45;
+    transform:translateX(-50%) translateY(10px);
+  }
+
+  .speech.show{
+    transform:translateX(-50%) translateY(0);
+  }
+
+  /* Tail centers automatically */
+  .speech::after{
+    left:50%;
+    bottom:-14px;
+    transform:translateX(-50%);
+    border-width:14px 12px 0 12px;
+    border-style:solid;
+    border-color:rgba(245,250,255,.96) transparent transparent transparent;
+  }
+}
+
+</style>
+</head>
+
+<body>
+<div class="scene" id="scene">
+
+  <!-- Dragon -->
+  <div class="dragon" id="dragon">
+    <div class="head">
+      <div class="horn left"></div>
+      <div class="horn right"></div>
+      <div class="eye left"></div>
+      <div class="eye right"></div>
+      <div class="snout"></div>
+      <div class="nostril left"></div>
+      <div class="nostril right"></div>
+      <div class="mouth" id="mouth"></div>
+    </div>
+  </div>
+
+  <!-- Images -->
+  <div class="memories" id="memories">
+    <div class="memory"><img src="bongda.jpg"><div class="caption">Soccer</div></div>
+    <div class="memory"><img src="keoco.jpg"><div class="caption">Tug of War</div></div>
+    <div class="memory"><img src="vovinam.jpeg"><div class="caption">Vovinam</div></div>
+    <div class="memory"><img src="shuttlecock.png"><div class="caption">Shuttlecock kicking</div></div>
+  </div>
+
+  <!-- Speech -->
+<!-- Speech -->
+<div class="speech" id="speech">
+  <strong>These are the games of our school years.</strong>
+  <br><br>
+  Soccer, Tug of War, Vovinam, Shuttlecock —
+  sports that fill dusty schoolyards and echo with cheers.
+  <br><br>
+  They appear again and again in <em>Hội khỏe Phù Đổng</em>,
+  bringing together students from <strong>Middle School</strong>
+  to <strong>High School</strong>.
+  <br><br>
+  <em>
+    This is what childhood looks like.<br>
+    Fire, laughter, and fearless nights.<br>
+    Wanna know more!!?? Let the VIBE continue...
+  </em>
+
+
+</div>
+
+
+<script>
+const scene = document.getElementById("scene");
+const mouth = document.getElementById("mouth");
+const memories = document.getElementById("memories");
+const speech = document.getElementById("speech");
+
+/* ================= FIRE FUNCTION ================= */
+function blastFire(tx, ty, delay){
+  setTimeout(() => {
+    const m = mouth.getBoundingClientRect();
+    const s = scene.getBoundingClientRect();
+    const ox = m.left - s.left;
+    const oy = m.top - s.top;
+
+    for(let i = 0; i < 18; i++){
+      const dx = tx - ox + (Math.random()*60 - 30);
+      const dy = ty - oy + (Math.random()*60 - 30);
+
+      ["fire-glow","fire-core","fire-ember"].forEach(c => {
+        const f = document.createElement("div");
+        f.className = c;
+        f.style.left = ox + "px";
+        f.style.top = oy + "px";
+        f.style.setProperty("--dx", dx + "px");
+        f.style.setProperty("--dy", dy + "px");
+        scene.appendChild(f);
+        setTimeout(() => f.remove(), 1800);
+      });
+    }
+  }, delay);
+}
+
+/* ================= AUTO SEQUENCE ================= */
+window.addEventListener("load", () => {
+
+  /* Fire → reveal memories */
+  const y = scene.clientHeight * 0.42;
+  [-260, -90, 90, 260].forEach((d, i) => {
+    blastFire(scene.clientWidth / 2 + d, y, i * 260);
+  });
+
+  /* Show images */
+  setTimeout(() => {
+    memories.classList.add("show");
+  }, 900);
+
+  /* Show speech */
+  setTimeout(() => {
+    speech.classList.add("show");
+  }, 2000);
+
+  /* Final powerful burst */
+  setTimeout(() => {
+    blastFire(scene.clientWidth * 0.6, scene.clientHeight * 0.45, 0);
+  }, 8000);
+
+  /* Transition out */
+  setTimeout(() => {
+    document.getElementById("food-transition")?.classList.add("active");
+  }, 9000);
+
+  /* Go to next scene */
+  setTimeout(() => {
+    window.location.href = "scene4.html";
+  }, 12000);
+
+});
+</script>
+
+<div id="food-transition"></div>
+
+</body>
+</html>

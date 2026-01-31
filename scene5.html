@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="devices.css">
+<title>Things We Cook in Winter</title>
+
+<style>
+:root{
+  --bg:#0f1116;
+  --fg:#e8eaed;
+  --font: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --dragon:#d4af37;
+  --dragon-soft:#f3d27a;
+  --dragon-eye:#2b1400;
+
+  --line-delay:0.14s;
+  --line-draw:0.9s;
+}
+
+html,body{
+  margin:0;
+  min-height:100svh;
+  background-color:var(--bg); /* fallback */
+  background:
+    radial-gradient(1400px 800px at 40% 20%, #1b2030, var(--bg));
+  font-family:var(--font);
+  overflow:hidden;
+}
+
+
+
+/* TITLE */
+h1{
+  position:absolute;
+  top:20px;
+  right:40px;
+  margin:0;
+  color:#ffd84a;
+  letter-spacing:0.15em;
+  text-shadow:0 0 18px rgba(255,216,74,.4);
+  font-size:clamp(26px,4vw,46px);
+  text-align:right;
+  z-index:10;
+}
+
+/* DRAGON GROUP */
+.dragon-center{
+  position:absolute;
+  top:50%;
+  right:20px;
+  transform:translateY(-50%);
+  display:flex;
+  align-items:center;
+  gap:18px;
+  z-index:20;
+}
+
+/* DRAGON */
+/* DRAGON */
+.dragon{
+  position:relative;
+  width:180px;
+  height:180px;
+  pointer-events:none;
+}
+
+/* HEAD — single coordinate system */
+.head{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:150px;
+  height:130px;
+  background:linear-gradient(145deg,#d4af37,#b8860b);
+  border-radius:60% 60% 55% 55%;
+  box-shadow:0 10px 24px rgba(0,0,0,.4);
+}
+
+/* HORNS — anchored to head */
+/* HORNS — attached to skull, fully controllable */
+.horn{
+  position:absolute;
+  top:5px;                        /* base attachment */
+  width:14px;
+  height:44px;
+  background:#f5d76e;
+  border-radius:8px;
+  transform-origin:bottom center;
+}
+
+/* LEFT horn */
+.horn.left{
+  left:25%;
+  top:-30px;                     /* vertical control */
+  transform:rotate(-12deg);
+}
+
+/* RIGHT horn */
+.horn.right{
+  left:64%;
+  top:30px;                     /* independent vertical control */
+  transform:rotate(12deg);
+}
+
+
+/* base eye */
+.eye{
+  position:absolute;
+  top:42%;
+  width:12px;
+  height:12px;
+  background:#2b1400;
+  border-radius:50%;
+}
+
+/* left eye unchanged */
+.eye.left{
+  left:45%;
+  transform:translateX(-26px);
+}
+
+/* right eye slightly lower */
+.eye.right{
+  left:42%;
+  top:88%;              /* ↓ lowered independenly */
+  transform:translateX(26px);
+}
+
+
+
+/* SNOUT — centered on face axis */
+.snout{
+  position:absolute;
+  top:56%;
+  left:50%;
+  transform:translateX(-50%);
+  width:70px;
+  height:42px;
+  background:#f3d27a;
+  border-radius:24px;
+}
+
+
+
+
+
+
+/* FIRE */
+.fire{
+  position:absolute;
+  right:130px;
+  top:88px;
+  width:0;
+  height:26px;
+  background:linear-gradient(270deg,#ffd84a,#ff8c00,#ff2d00);
+  border-radius:30px;
+  filter:blur(2px);
+  opacity:0;
+}
+.fire.active{
+  animation:fireLeft 1.2s ease-out forwards;
+}
+@keyframes fireLeft{
+  0%{width:0;opacity:0}
+  15%{opacity:1}
+  100%{width:460px;opacity:0}
+}
+
+/* BUBBLE */
+.bubble{
+  max-width:320px;
+  padding:16px 18px;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 0 26px rgba(0,0,0,.6);
+  font-size:14px;
+  line-height:1.4;
+  position:relative;
+  opacity:0;
+  transform:translateY(10px);
+  transition:.8s ease;
+  box-sizing:border-box; /* ✅ IMPORTANT */
+}
+
+
+.bubble::before{
+  content:"";
+  position:absolute;
+  left:-18px;
+  top:44px;
+  border-width:12px 18px 12px 0;
+  border-style:solid;
+  border-color:transparent rgba(255,255,255,.25) transparent transparent;
+}
+.bubble::after{
+  content:"";
+  position:absolute;
+  left:-15px;
+  top:45px;
+  border-width:11px 16px 11px 0;
+  border-style:solid;
+  border-color:transparent rgba(255,255,255,.1) transparent transparent;
+}
+
+.bubble.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* MAIN */
+.container{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:60px;
+  padding:80px 40px 40px;
+}
+
+/* TREE */
+.tree{
+  margin-top:-10px;
+  font-size:clamp(14px,2.2vw,20px);
+  line-height:1.15;
+  white-space:pre;
+  color:var(--fg);
+}
+
+.line{
+  display:block;
+  width:0;
+  overflow:hidden;
+  animation:draw var(--line-draw) steps(40,end) forwards;
+}
+.line:nth-child(n){
+  animation-delay: calc(var(--i) * var(--line-delay));
+}
+@keyframes draw{to{width:100%}}
+
+.tree.pause .line{ animation-play-state:paused; }
+.tree.play .line{ animation-play-state:running; }
+
+.y{color:#ffd84a}
+.g{color:#33ff66}
+.r{color:#ff3b30}
+.o{color:#ff9f0a}
+
+/* IMAGES */
+/* ================= FINETUNE CONTROLS ================= */
+:root{
+  --row-gap:0px;          /* vertical gap between image rows */
+  --arrow-gap:30px;        /* space between arrow and image */
+  --img-border:1px;       /* image border thickness */
+}
+
+/* ================= IMAGES ================= */
+.right{
+  display:grid;
+  grid-auto-rows:auto;     /* rows fit content */
+  row-gap:var(--row-gap);
+  margin-top:-60px;
+}
+
+.row{
+  display:flex;
+  align-items:flex-start;  /* no vertical stretch */
+  opacity:0;
+  transform:translateX(-150px);
+  transition:
+    opacity .8s ease,
+    transform .8s ease;
+}
+
+.row.show{
+  opacity:1;
+  transform:translateX(0);
+}
+
+/* arrow */
+.arrow{
+  font-size:32px;
+  color:#ffd84a;
+  margin-right:var(--arrow-gap);
+  line-height:1;           /* prevents vertical drift */
+}
+
+/* image */
+img{
+  display:block;
+  width:160px;
+  height:clamp(80px,12vh,100px);
+  object-fit:cover;
+  border-radius:12px;
+  border:var(--img-border) solid rgba(255,255,255,.25);
+}
+/* ================= RIVER / SAIL TRANSITION ================= */
+#ink-bloom{
+  position:fixed; inset:0; z-index:9999; pointer-events:none;
+  background:
+    radial-gradient(circle at 70% 60%, rgba(90,160,220,.95), transparent 40%),
+    radial-gradient(circle at 40% 55%, rgba(40,110,180,.9), transparent 45%),
+    #0f1116;
+  opacity:0; filter:blur(18px);
+  transition:opacity 1s ease, filter 1.2s ease;
+}
+#ink-bloom.active{ opacity:1; filter:blur(0); }
+/* =========================
+   SAMSUNG / TALL ANDROID FIX
+========================= */
+@media (max-width: 430px) and (min-aspect-ratio: 9/18) {
+
+  /* Allow full-height flow */
+  html, body{
+    height:100%;
+  }
+
+  /* Title: keep readable */
+  h1{
+    top:16px;
+    right:16px;
+    font-size:clamp(20px,6vw,30px);
+    text-align:right;
+  }
+
+  /* Stack dragon + bubble vertically */
+  .dragon-center{
+    left:50%;
+    right:auto;
+    top:16svh;
+    transform:translateX(-50%);
+    flex-direction:column;
+    gap:12px;
+  }
+
+  /* Scale dragon slightly */
+  .dragon{
+    width:140px;
+    height:140px;
+  }
+
+  /* Bubble: THIS IS THE KEY */
+  .bubble{
+    width:92vw;
+    max-width:92vw;
+    font-size:14px;
+    line-height:1.45;
+    padding:14px 16px;
+  }
+
+  /* Bubble tail centers */
+  .bubble::before,
+  .bubble::after{
+    left:50%;
+    top:auto;
+    bottom:-12px;
+    transform:translateX(-50%) rotate(90deg);
+  }
+
+  /* Main content stacks */
+  .container{
+    grid-template-columns:1fr;
+    gap:32px;
+    padding:24svh 16px 24px;
+  }
+
+  /* Tree scales down */
+  .tree{
+    font-size:clamp(13px,3.8vw,16px);
+    margin-top:0;
+  }
+
+  /* Images stack nicely */
+  .right{
+    margin-top:0;
+    row-gap:16px;
+  }
+
+  .row{
+    transform:none;
+  }
+
+  img{
+    width:120px;
+    height:90px;
+  }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<h1>Things We Cook<br><br>in Winter</h1>
+
+<div class="dragon-center">
+  <div class="dragon" id="dragon">
+    <div class="head">
+      <div class="horn left"></div>
+      <div class="horn right"></div>
+      <div class="eye left"></div>
+      <div class="eye right"></div>
+      <div class="snout"></div>
+      <div class="nostril left"></div>
+      <div class="nostril right"></div>
+    </div>
+    <div class="body"></div>
+    <div class="tail"></div>
+    <div class="fire" id="fire"></div>
+  </div>
+
+  <div class="bubble" id="bubble">
+    What did you do during winter break?<br><br>
+    Vietnamese groups usually cook together DAILY — warm food, shared effort, and lots of memories.<br><br>
+    Now — Ready to fall in love with Vietnam? 🐲 Let the golden dragon guide you to "Ha Long Bay"…
+  </div>
+</div>
+
+<div class="container">
+
+<pre class="tree pause" id="tree">
+<span class="line" style="--i:0"><span class="y">        |</span></span>
+<span class="line" style="--i:1"><span class="y">       -+-</span></span>
+<span class="line" style="--i:2"><span class="y">        A</span></span>
+<span class="line" style="--i:3"><span class="g">       /=\</span></span>
+<span class="line" style="--i:4"><span class="g">      /</span><span class="r">O</span><span class="g">/*\</span><span class="y">O</span></span></span>
+<span class="line" style="--i:5"><span class="g">     /=====\\</span></span>
+<span class="line" style="--i:6"><span class="g">    /  O   \</span></span>
+<span class="line" style="--i:7"><span class="g">   / O O* O \</span></span>
+<span class="line" style="--i:8"><span class="g">  /============\\</span></span>
+<span class="line" style="--i:9"><span class="g"> /   *     *   \</span></span>
+<span class="line" style="--i:10"><span class="g">/ O  *  O  *  \</span></span>
+<span class="line" style="--i:11"><span class="g">/=================\\</span></span>
+<span class="line" style="--i:12"><span class="o">       ||</span></span>
+<span class="line" style="--i:13"><span class="o">      _||_</span></span>
+</pre>
+
+<div class="right">
+  <div class="row"><span class="arrow">⟶</span><img src="xiumai.jpg"></div>
+  <div class="row"><span class="arrow">⟶</span><img src="banhtrang.jpg"></div>
+  <div class="row"><span class="arrow">⟶</span><img src="bun.jpg"></div>
+  <div class="row"><span class="arrow">⟶</span><img src="banhcuon.jpg"></div>
+</div>
+
+</div>
+
+<script>
+const tree = document.getElementById("tree");
+const fire = document.getElementById("fire");
+const bubble = document.getElementById("bubble");
+const dragon = document.getElementById("dragon");
+const rows = document.querySelectorAll(".row");
+
+setTimeout(()=>fire.classList.add("active"),600);
+setTimeout(()=>{ tree.classList.remove("pause"); tree.classList.add("play"); },1800);
+
+const lines = document.querySelectorAll(".tree .line");
+const totalTreeTime =
+  lines.length * parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue("--line-delay")) +
+  parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue("--line-draw"));
+
+setTimeout(()=>{
+  rows.forEach((r,i)=>setTimeout(()=>r.classList.add("show"),i*250));
+},1800 + totalTreeTime*1000);
+
+setTimeout(()=>bubble.classList.add("show"),2200 + totalTreeTime*1000);
+/* ================= AUTO TRANSITION ================= */
+
+// give time to read bubble
+setTimeout(() => {
+  document.getElementById("ink-bloom").classList.add("active");
+}, 8800 + totalTreeTime * 1000);
+
+// go to next scene automatically
+setTimeout(() => {
+  location.href = "scene6.html";
+}, 10500 + totalTreeTime * 1000);
+
+
+
+
+
+</script>
+<div id="ink-bloom"></div>
+
+</body>
+</html>

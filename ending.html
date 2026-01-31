@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="devices.css">
+<title>Ending Scene – Circular Globe + VN → Chicago Flight</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg0:#05070f;
+    --bg1:#0b1640;
+    --fg:#eef1ff;
+    --muted:rgba(238,241,255,.72);
+    --gold:#ffd24a;
+    --glass:rgba(255,255,255,.10);
+    --border:rgba(255,255,255,.16);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; margin:0; }
+  body{
+    overflow:hidden;
+    background:
+      radial-gradient(1200px 800px at 50% 30%, var(--bg1), var(--bg0));
+    font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--fg);
+  }
+
+  .scene{
+  position:relative;
+  width:100%;
+  height:100svh;
+  inset:auto;           /* IMPORTANT */
+  border-radius:0;      /* phones edge-to-edge */
+  overflow:hidden;
+  border:none;
+  background:rgba(255,255,255,.04);
+}
+
+
+  /* Canvas must be the same size as its box */
+  canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+  }
+
+  /* Labels */
+  .label{
+    position:absolute;
+    padding:8px 12px;
+    font-size:12px;
+    border-radius:999px;
+    background:rgba(0,0,0,.45);
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(10px);
+    transform:translate(-50%,-50%);
+    white-space:nowrap;
+    pointer-events:none;
+  }
+  .label.dest{
+    color:var(--gold);
+    font-weight:600;
+  }
+
+  /* Plane */
+  .plane{
+    position:absolute;
+    font-size:18px;
+    transform:translate(-50%,-50%) rotate(0deg);
+    filter:drop-shadow(0 0 7px rgba(255,210,74,.8));
+    pointer-events:none;
+  }
+
+  /* Arrival bubble */
+  .bubble{
+    position:absolute;
+    left:50%;
+    bottom:26px;
+    transform:translateX(-50%);
+    width:min(820px, 88%);
+    padding:18px 22px;
+    border-radius:20px;
+    background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(12px);
+    box-shadow:0 18px 60px rgba(0,0,0,.45);
+    opacity:0;
+    transition:opacity 1.2s ease;
+    pointer-events:none;
+  }
+  .bubble.show{
+  opacity:1;
+  pointer-events:auto;   /* ✅ THIS is the key */
+}
+
+.bubble h1{
+  margin:0 0 8px 0;
+  font-family:"Playfair Display", serif;
+  font-size:28px;
+  letter-spacing:.01em;
+}
+
+.bubble p{
+  margin:0;
+  font-size:14px;
+  color:rgba(238,241,255,.90);
+  line-height:1.35;
+}
+
+  /* CTA BUTTON — PORTAL STYLE */
+  .cta.portal{
+    display:inline-block;
+    margin:22px auto 0;
+    padding:14px 28px;
+    border-radius:999px;
+    background:linear-gradient(180deg,#ffe7a0,#ffd24a);
+    color:#0b1640;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.03em;
+    text-decoration:none;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.9),
+      0 22px 60px rgba(0,0,0,.55);
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+
+  .cta.portal:hover{
+    transform:translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,1),
+      0 32px 80px rgba(0,0,0,.65);
+  }
+
+
+  /* Small corner hint (optional) */
+  .hint{
+    position:absolute;
+    top:16px;
+    right:16px;
+    padding:10px 12px;
+    border-radius:14px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    color:rgba(238,241,255,.70);
+    font-size:12px;
+    backdrop-filter: blur(10px);
+    pointer-events:none;
+  }
+</style>
+</head>
+
+<body>
+  <div class="scene">
+    <canvas id="c"></canvas>
+
+    <div id="vnLabel" class="label">Vietnam</div>
+    <div id="chiLabel" class="label dest">Galesburg, USA</div>
+    <div id="plane" class="plane">✈︎</div>
+
+    <div id="bubble" class="bubble">
+  <h1>This is your IFAIR 2026 — Vietnamese Club</h1>
+
+  <p>
+    Built with passion by <strong>Kacy ’25</strong> for the Vietnamese Club 2025–2026.<br>
+    Every line of code carries the spirit of our culture, our people, and our stories.
+  </p>
+
+  <p>
+    Heartfelt thanks to <strong>Lam Giang ’25 (Jane)</strong> and <strong>Tra ’25</strong>
+    for capturing Vietnam through their beautiful photos.
+  </p>
+
+  <p>
+    In addition, special thanks to <strong>ICLUB EXEC 2025–2026</strong>
+    for making this event possible.
+  </p>
+
+
+
+
+
+  <a
+    id="ctaLink"
+    href="https://www.instagram.com/vietnameseclub_knoxcollege/"
+    target="_blank"
+    rel="noopener"
+    class="cta portal"
+  >
+    🌏 Continue the Journey with Vietnamese Club...
+  </a>
+</div>
+
+
+
+    <div class="hint">Click to replay</div>
+  </div>
+
+<script>
+(() => {
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+
+  const vnLabel  = document.getElementById("vnLabel");
+  const chiLabel = document.getElementById("chiLabel");
+  const planeEl  = document.getElementById("plane");
+  const bubble   = document.getElementById("bubble");
+
+  // --- Correct canvas sizing (prevents the “quarter globe” bug) ---
+  function resize(){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width  = Math.round(rect.width  * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+
+    // draw in CSS pixels (so positions match DOM labels)
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener("resize", () => { resize(); restart(); }, { passive:true });
+    // Make CTA actually navigable (stop replay hijacking)
+  const cta = document.getElementById("ctaLink");
+
+  cta.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevents restart()
+  });
+
+
+  // --- Geo points ---
+  // Vietnam (rough center) and Chicago
+  const VN  = { lat: 14.06, lon: 108.28 };
+  const CHI = { lat: 41.88, lon: -87.63 };
+
+  // Convert lat/lon to 3D vector on unit sphere
+  function llToVec(latDeg, lonDeg){
+    const lat = latDeg * Math.PI/180;
+    const lon = lonDeg * Math.PI/180;
+    return {
+      x: Math.cos(lat) * Math.cos(lon),
+      y: Math.sin(lat),
+      z: Math.cos(lat) * Math.sin(lon)
+    };
+  }
+
+  // Rotate by yaw (Y axis) then pitch (X axis)
+  function rotate(v, yaw, pitch){
+    const cy = Math.cos(yaw), sy = Math.sin(yaw);
+    let x =  v.x*cy + v.z*sy;
+    let z = -v.x*sy + v.z*cy;
+    let y =  v.y;
+
+    const cx = Math.cos(pitch), sx = Math.sin(pitch);
+    const y2 = y*cx - z*sx;
+    const z2 = y*sx + z*cx;
+
+    return { x, y:y2, z:z2 };
+  }
+
+  // Perspective projection (CSS pixel coords)
+  function project(v, cx, cy, r){
+    const depth = 2.6;               // larger => less perspective
+    const s = r / (depth - v.z);     // perspective scale
+    return { x: cx + v.x*s, y: cy - v.y*s, s };
+  }
+
+  // Great-circle interpolation using slerp (correct for far regions)
+  function slerp(a, b, t){
+    const dot = a.x*b.x + a.y*b.y + a.z*b.z;
+    const omega = Math.acos(Math.max(-1, Math.min(1, dot)));
+    if (omega < 1e-6) return { x:a.x, y:a.y, z:a.z };
+    const so = Math.sin(omega);
+    const s1 = Math.sin((1-t)*omega)/so;
+    const s2 = Math.sin(t*omega)/so;
+    return { x: a.x*s1 + b.x*s2, y: a.y*s1 + b.y*s2, z: a.z*s1 + b.z*s2 };
+  }
+
+  // Easing
+  const clamp01 = t => Math.max(0, Math.min(1, t));
+  const easeInOut = t => {
+    t = clamp01(t);
+    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+  };
+
+  // Precompute vectors
+  const vVN  = llToVec(VN.lat, VN.lon);
+  const vCHI = llToVec(CHI.lat, CHI.lon);
+
+  // --- Animation timeline ---
+  // Phase A: rotate to center Vietnam (0..A)
+  // Phase B: fly VN -> CHI while still slightly rotating (A..1)
+  const ROTATE_PHASE = 0.35;         // portion of total time
+  const TOTAL_MS = 9200;
+
+  let t0 = null;
+  let raf = null;
+
+  function drawSphere(cx, cy, r){
+    // glow body
+    const g = ctx.createRadialGradient(cx - r*0.38, cy - r*0.38, r*0.22, cx, cy, r);
+    g.addColorStop(0, "rgba(255,255,255,0.26)");
+    g.addColorStop(0.45, "rgba(120,145,255,0.10)");
+    g.addColorStop(1, "rgba(0,0,0,0.62)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fill();
+
+    // rim
+    ctx.strokeStyle = "rgba(255,255,255,0.16)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.stroke();
+
+    // atmosphere
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.strokeStyle = "rgba(110,140,255,0.10)";
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r+2, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawGraticule(cx, cy, r, yaw, pitch){
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.clip();
+
+    ctx.lineWidth = 1;
+
+    // latitudes
+    ctx.strokeStyle = "rgba(255,255,255,0.10)";
+    for (let lat=-60; lat<=60; lat+=30){
+      ctx.beginPath();
+      let started = false;
+      for (let lon=-180; lon<=180; lon+=6){
+        const v = rotate(llToVec(lat, lon), yaw, pitch);
+        if (v.z > -0.35){
+          const p = project(v, cx, cy, r);
+          if (!started){ ctx.moveTo(p.x, p.y); started=true; }
+          else ctx.lineTo(p.x, p.y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    // longitudes
+    ctx.strokeStyle = "rgba(255,255,255,0.08)";
+    for (let lon=-150; lon<=150; lon+=30){
+      ctx.beginPath();
+      let started = false;
+      for (let lat=-85; lat<=85; lat+=5){
+        const v = rotate(llToVec(lat, lon), yaw, pitch);
+        if (v.z > -0.35){
+          const p = project(v, cx, cy, r);
+          if (!started){ ctx.moveTo(p.x, p.y); started=true; }
+          else ctx.lineTo(p.x, p.y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function drawFlightPath(cx, cy, r, yaw, pitch, prog){
+    // prog: 0..1, draw partial path up to prog
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.clip();
+
+    ctx.beginPath();
+    const N = 100;
+    for (let i=0; i<=N; i++){
+      const u = (i/N) * prog;
+      const vv = slerp(vVN, vCHI, u);
+      const vr = rotate(vv, yaw, pitch);
+      const p  = project(vr, cx, cy, r);
+
+      if (i === 0) ctx.moveTo(p.x, p.y);
+      else ctx.lineTo(p.x, p.y);
+    }
+    ctx.strokeStyle = "rgba(255,210,74,0.90)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function placeLabel(el, cx, cy, r, yaw, pitch, vec){
+    const v = rotate(vec, yaw, pitch);
+    const p = project(v, cx, cy, r);
+
+    // if on back hemisphere, softly hide
+    el.style.opacity = (v.z > 0.05) ? "1" : "0.18";
+    el.style.left = p.x + "px";
+    el.style.top  = p.y + "px";
+    return { v, p };
+  }
+
+  function draw(ts){
+    if (!t0) t0 = ts;
+    const raw = (ts - t0) / TOTAL_MS;
+    const t = Math.min(1, raw);
+
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+
+    // Correct center & safe radius => full circular globe always visible
+    const cx = w * 0.52;
+    const cy = h * 0.50;
+    const r  = Math.min(w, h) * 0.28;   // safe: never clips
+
+    ctx.clearRect(0,0,w,h);
+
+    // Phase split
+    const a = clamp01(t / ROTATE_PHASE);            // 0..1 rotate-to-VN
+    const b = (t < ROTATE_PHASE) ? 0 : clamp01((t - ROTATE_PHASE) / (1 - ROTATE_PHASE));
+    const aE = easeInOut(a);
+    const bE = easeInOut(b);
+
+    // Rotation:
+    // - yaw aims Vietnam to face camera during phase A
+    // - then slowly continues a little during flight for cinematic feel
+    const yawVN  = -(VN.lon * Math.PI/180);         // yaw that faces VN
+    const yawCHI = -(CHI.lon * Math.PI/180);        // yaw that faces Chicago (approx)
+    const yaw = yawVN * aE + (yawCHI * 0.35) * bE;  // blend
+    const pitch = -0.18;
+
+    // Draw globe (sphere + grid)
+    drawSphere(cx, cy, r);
+    drawGraticule(cx, cy, r, yaw, pitch);
+
+    // Flight path and plane after phase A begins
+    if (b > 0){
+      drawFlightPath(cx, cy, r, yaw, pitch, b);
+
+      const vv = slerp(vVN, vCHI, bE);
+      const vr = rotate(vv, yaw, pitch);
+      const pp = project(vr, cx, cy, r);
+
+      // hide plane if it goes behind the globe
+      planeEl.style.opacity = (vr.z > 0.02) ? "1" : "0.10";
+      planeEl.style.left = pp.x + "px";
+      planeEl.style.top  = pp.y + "px";
+
+      // rotate plane roughly along direction (screen-space tangent)
+      const vv2 = slerp(vVN, vCHI, Math.min(1, bE + 0.01));
+      const vr2 = rotate(vv2, yaw, pitch);
+      const pp2 = project(vr2, cx, cy, r);
+      const ang = Math.atan2(pp2.y - pp.y, pp2.x - pp.x) * 180/Math.PI;
+      planeEl.style.transform = `translate(-50%,-50%) rotate(${ang}deg)`;
+    } else {
+      // before flight, park plane near VN
+      const vnRot = rotate(vVN, yaw, pitch);
+      const vnP   = project(vnRot, cx, cy, r);
+      planeEl.style.left = (vnP.x + 14) + "px";
+      planeEl.style.top  = (vnP.y + 10) + "px";
+      planeEl.style.opacity = "0";
+    }
+
+    // Labels
+    placeLabel(vnLabel, cx, cy, r, yaw, pitch, vVN);
+    placeLabel(chiLabel, cx, cy, r, yaw, pitch, vCHI);
+
+    // Bubble appears at arrival
+    if (t > 0.92) bubble.classList.add("show");
+    else bubble.classList.remove("show");
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  function restart(){
+    if (raf) cancelAnimationFrame(raf);
+    t0 = null;
+    bubble.classList.remove("show");
+    planeEl.style.opacity = "0";
+    raf = requestAnimationFrame(draw);
+  }
+
+  // Boot
+  resize();
+  restart();
+
+  // Click to replay
+  window.addEventListener("click", restart, { passive:true });
+})();
+</script>
+</body>
+</html>
