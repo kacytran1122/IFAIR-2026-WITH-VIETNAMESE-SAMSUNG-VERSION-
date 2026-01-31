@@ -89,10 +89,17 @@ body{
 
 /* ===== BALL ===== */
 .ball{
-  position:absolute; width:22px; height:22px; background:#fff; border-radius:50%;
-  left:50%; top:50%; transform:translate(-50%,-50%);
+  position:absolute;
+  width:22px;
+  height:22px;
+  background:#fff;
+  border-radius:50%;
+  left:0;
+  top:0;
+  transform:none; /* REMOVE centering */
   transition:left .9s ease;
 }
+
 
 /* ===== PLAYERS ===== */
 .player{
@@ -334,33 +341,31 @@ window.addEventListener("load", () => {
 
   /* STEP 1 — kick ball */
   setTimeout(() => {
-    const pitch = document.querySelector(".pitch");
+  const pitch = document.querySelector(".pitch");
+  const dragonLeg = document.querySelector(".player.dragon .leg");
+
+  const pitchRect = pitch.getBoundingClientRect();
+  const legRect = dragonLeg.getBoundingClientRect();
+
+  /* Place ball at dragon’s foot */
+  ball.style.left = (legRect.left - pitchRect.left + legRect.width + 6) + "px";
+  ball.style.top  = (legRect.top  - pitchRect.top  + legRect.height - 6) + "px";
+
+  /* Kick animation */
+  setTimeout(() => {
     ball.style.left = (pitch.clientWidth - 40) + "px";
+  }, 100);
 
+  /* crowd cheer */
+  document.querySelectorAll(".fan").forEach(f => {
+    if (Math.random() < 0.65) {
+      f.classList.add("cheer");
+      setTimeout(() => f.classList.remove("cheer"), 600);
+    }
+  });
 
-    /* crowd cheer */
-    document.querySelectorAll(".fan").forEach(f => {
-      if (Math.random() < 0.65) {
-        f.classList.add("cheer");
-        setTimeout(() => f.classList.remove("cheer"), 600);
-      }
-    });
-  }, 1200);
+}, 1200);
 
-  /* STEP 2 — show story */
-  setTimeout(() => {
-    story.classList.add("show");
-  }, 3000);
-
-  /* STEP 3 — transition to Scene 3 */
-  setTimeout(() => {
-    transitionBall.classList.add("active");
-  }, 5200);
-
-  /* STEP 4 — redirect */
-  setTimeout(() => {
-    window.location.href = "scene3.html";
-  }, 5850);
 
 });
 </script>
@@ -368,3 +373,4 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
+
