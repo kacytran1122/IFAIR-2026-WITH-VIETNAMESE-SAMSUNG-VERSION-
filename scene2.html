@@ -91,75 +91,191 @@ body{
 .ball{
   position:absolute; width:22px; height:22px; background:#fff; border-radius:50%;
   left:50%; top:50%; transform:translate(-50%,-50%);
-  position:absolute;
-  width:22px;
-  height:22px;
-  background:#fff;
-  border-radius:50%;
-  left:0;
-  top:0;
-  transform:none; /* REMOVE centering */
   transition:left .9s ease;
 }
-
 
 /* ===== PLAYERS ===== */
 .player{
   position:absolute; width:90px; height:170px;
-@@ -334,37 +341,36 @@
+  display:flex; flex-direction:column; align-items:center;
+  top:50%; transform:translateY(-50%);
+}
+.player.dragon{ left:260px; cursor:pointer; }
+.player.panda{ left:520px; }
+
+.face{ width:64px; height:56px; border-radius:50% 50% 40% 40%; position:relative; }
+.face.dragon{
+  background:linear-gradient(145deg,var(--dragon),var(--dragon-dark));
+}
+.face.dragon::before,.face.dragon::after{
+  content:""; position:absolute; top:-22px; width:8px; height:30px; background:var(--gold); border-radius:6px;
+}
+.face.dragon::before{ left:14px; } .face.dragon::after{ right:14px; }
+.snout{
+  position:absolute; width:36px; height:24px; background:#f3c969; border-radius:16px;
+  left:50%; bottom:8px; transform:translateX(-50%);
+}
+.eye{ width:6px; height:6px; background:#2b1a0f; border-radius:50%; position:absolute; top:22px; }
+.eye.left{ left:18px; } .eye.right{ right:18px; }
+
+.face.panda{ background:var(--panda-white); border-radius:50%; }
+.face.panda::before,.face.panda::after{
+  content:""; position:absolute; top:-10px; width:18px; height:18px; background:var(--panda-black); border-radius:50%;
+}
+.face.panda::before{ left:6px; } .face.panda::after{ right:6px; }
+.patch{
+  position:absolute; width:16px; height:18px; background:var(--panda-black); border-radius:50%; top:18px;
+}
+.patch.left{ left:12px; } .patch.right{ right:12px; }
+
+.body{ width:40px; height:70px; background:#234; border-radius:20px; margin-top:6px; }
+.leg{ width:14px; height:34px; background:#123; border-radius:8px; margin-top:-6px; }
+
+/* ===== SPEECH ===== */
+.speech{
+  position:absolute; left:50%; transform:translateX(-50%);
+  background:#fff; border-radius:20px; line-height:1.5;
+  opacity:0; transition:opacity .6s ease;
+  z-index:10;
+}
+.speech.hint{
+  top:300px; width:260px; padding:12px 14px; font-size:13px; opacity:1;
+}
+.speech.story{
+  top:60px; width:520px; padding:22px; font-size:15px;
+}
+.speech.show{ opacity:1; }
+
+/* ===== CTA ===== */
+.cta{
+  display:block;
+  margin:22px auto 0;
+  padding:12px 22px;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.6px;
+  color:#fff;
+  background:linear-gradient(120deg,#e63946,#f1c40f,#2ecc71,#3498db,#9b59b6);
+  background-size:300% 300%;
+  border:none;
+  border-radius:26px;
+  cursor:pointer;
+  animation:rainbowFlow 4s ease infinite;
+  box-shadow:0 10px 28px rgba(0,0,0,.35);
+}
+.cta:hover{ transform:scale(1.05); }
+@keyframes rainbowFlow{
+  0%{ background-position:0% 50%; }
+  50%{ background-position:100% 50%; }
+  100%{ background-position:0% 50%; }
+}
+
+/* ===== TRANSITION TO SCENE 3 ===== */
+/* ===== SOCCER BALL ZOOM TRANSITION ===== */
+#ball-transition{
+  position:fixed;
+  left:50%;
+  top:50%;
+  width:22px;
+  height:22px;
+  background:
+    radial-gradient(circle at 30% 30%, #fff 35%, #000 36% 45%, #fff 46%);
+  border-radius:50%;
+  transform:translate(-50%,-50%) scale(0);
+  z-index:9999;
+  transition:transform .7s cubic-bezier(.6,0,.2,1);
+}
+
+#ball-transition.active{
+  transform:translate(-50%,-50%) scale(90);
+}
+
+/* =========================
+   SAMSUNG / TALL ANDROID FIX
+========================= */
+@media (max-width: 430px) and (min-aspect-ratio: 9/18) {
+
+  body{
+    height:100svh;
+    place-items:stretch;
+  }
+
+  /* Scene fills screen vertically */
+  .scene{
+    width:100%;
+    height:100svh;
+    aspect-ratio:auto;
+    border-radius:0;
+  }
+
+  /* Stands take less height */
+  .stands{
+    height:180px;
+    padding:10px;
+  }
+
+  /* Pitch adapts */
+  .pitch{
+    height:auto;
+    top:180px;
+    bottom:0;
+  }
+
+  /* Players reposition */
+  .player{
+    top:60%;
+  }
+
+  .player.dragon{ left:14vw; }
+  .player.panda{ left:48vw; }
+
+  /* Goal scales */
+  .goal{
+    width:90px;
+    height:120px;
+  }
+
+  /* Speech bubbles fit screen */
+  .speech.story{
+    width:92vw;
+    left:50%;
+    top:20svh;
+    transform:translateX(-50%);
+    font-size:14px;
+    padding:16px;
+  }
+
+  .speech.hint{
+    width:220px;
+    top:22svh;
+    font-size:12px;
+  }
+
+  /* CTA button fits */
+  .cta{
+    width:100%;
+    font-size:13px;
+    padding:10px 16px;
+  }
+}
+
+
+</style>
+</head>
+@@ -265,7 +334,9 @@
 
   /* STEP 1 — kick ball */
   setTimeout(() => {
+    ball.style.left = "820px";
     const pitch = document.querySelector(".pitch");
     ball.style.left = (pitch.clientWidth - 40) + "px";
-  const pitch = document.querySelector(".pitch");
-  const dragonLeg = document.querySelector(".player.dragon .leg");
 
-  const pitchRect = pitch.getBoundingClientRect();
-  const legRect = dragonLeg.getBoundingClientRect();
 
     /* crowd cheer */
     document.querySelectorAll(".fan").forEach(f => {
-      if (Math.random() < 0.65) {
-        f.classList.add("cheer");
-        setTimeout(() => f.classList.remove("cheer"), 600);
-      }
-    });
-  }, 1200);
-  /* Place ball at dragon’s foot */
-  ball.style.left = (legRect.left - pitchRect.left + legRect.width + 6) + "px";
-  ball.style.top  = (legRect.top  - pitchRect.top  + legRect.height - 6) + "px";
-
-  /* STEP 2 — show story */
-  /* Kick animation */
-  setTimeout(() => {
-    story.classList.add("show");
-  }, 3000);
-    ball.style.left = (pitch.clientWidth - 40) + "px";
-  }, 100);
-
-  /* STEP 3 — transition to Scene 3 */
-  setTimeout(() => {
-    transitionBall.classList.add("active");
-  }, 5200);
-  /* crowd cheer */
-  document.querySelectorAll(".fan").forEach(f => {
-    if (Math.random() < 0.65) {
-      f.classList.add("cheer");
-      setTimeout(() => f.classList.remove("cheer"), 600);
-    }
-  });
-
-}, 1200);
-
-  /* STEP 4 — redirect */
-  setTimeout(() => {
-    window.location.href = "scene3.html";
-  }, 5850);
-
-});
-</script>
+@@ -296,4 +367,4 @@
 <div id="ball-transition"></div>
 
 </body>
+</html>
 </html>
