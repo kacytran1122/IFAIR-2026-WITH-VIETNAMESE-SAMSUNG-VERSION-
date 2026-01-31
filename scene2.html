@@ -125,10 +125,17 @@ html, body {
 
 /* ===== BALL ===== */
 .ball{
-  position:absolute; width:22px; height:22px; background:#fff; border-radius:50%;
-  left:50%; top:50%; transform:translate(-50%,-50%);
-  transition:left .9s ease;
+  position:absolute;
+  width:22px;
+  height:22px;
+  background:#fff;
+  border-radius:50%;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) translateX(0);
+  transition:transform .9s ease;
 }
+
 
 /* ===== PLAYERS ===== */
 .player{
@@ -326,35 +333,63 @@ for (let r = 0; r < 5; r++) {
 }
 
 /* ================= ELEMENTS ================= */
+/* ================= ELEMENTS ================= */
 const ball = document.getElementById("ball");
 const hint = document.getElementById("hint");
 const story = document.getElementById("story");
 const transitionBall = document.getElementById("ball-transition");
+const goal = document.querySelector(".goal");
+
+/* ================= SCENE START ================= */
 function startScene() {
 
   hint.style.display = "none";
 
+  // Give layout time to settle
   setTimeout(() => {
-    ball.style.left = "85%";
+
+    // Measure AFTER layout is stable
+    const goalRect = goal.getBoundingClientRect();
+    const ballRect = ball.getBoundingClientRect();
+
+    // Distance from ball to goal
+    const dx = goalRect.left - ballRect.left + 40;
+
+    // Animate using transform (GPU-accelerated)
+    ball.style.transform =
+      `translate(-50%,-50%) translateX(${dx}px)`;
+
+    // Crowd reaction
     document.querySelectorAll(".fan").forEach(f => {
       if (Math.random() < 0.65) {
         f.classList.add("cheer");
         setTimeout(() => f.classList.remove("cheer"), 600);
       }
     });
+
   }, 1200);
 
+  // Story appears
   setTimeout(() => {
     story.classList.add("show");
   }, 2200);
 
+  // Transition to next scene
   setTimeout(() => {
     transitionBall.classList.add("active");
   }, 8000);
 
   transitionBall.addEventListener("transitionend", () => {
-  window.location.href = "scene3.html";
+    window.location.href = "scene3.html";
+  });
+}
+
+/* ================= AUTO PLAY ================= */
+window.addEventListener("load", () => {
+  startScene();
 });
+
+
 
 
 
@@ -373,5 +408,6 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
+
 
 
