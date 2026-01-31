@@ -30,27 +30,31 @@ body{
 
 /* ================= SCENE ================= */
 .scene{
-  width:min(900px, 94vw);
-  height:auto;
-  aspect-ratio:16/9;
-  position:relative;
-  overflow:hidden;
-  border-radius:16px;
-  background:var(--grass);
+  width: min(420px, 100vw);
+  height: min(760px, 100svh);
+  aspect-ratio: 9 / 16;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0; /* phones = no rounded frame */
+  background: var(--grass);
 }
+
 
 
 /* ===== STANDS ===== */
 .stands{
-  position:absolute;
-  top:0; left:0; right:0;
-  height:240px;
-  background:linear-gradient(#182045,#0b1020);
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  padding:14px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32%;
+  background: linear-gradient(#182045,#0b1020);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
 }
+
 .row{ display:flex; gap:6px; justify-content:center; }
 .fan{
   width:16px; height:28px;
@@ -71,15 +75,20 @@ body{
   left:0;
   right:0;
   bottom:0;
-  height:clamp(260px, 45%, 360px);
+  height:68%;
   background:var(--grass);
 }
 
-.center-line{ position:absolute; left:50%; top:0; bottom:0; width:4px; background:var(--line); transform:translateX(-50%); }
-.center-circle{
-  position:absolute; width:140px; height:140px; border:4px solid var(--line); border-radius:50%;
-  left:50%; top:50%; transform:translate(-50%,-50%);
+
+.center-line{
+  width: 3px;
 }
+
+.center-circle{
+  width: 120px;
+  height: 120px;
+}
+
 
 /* ===== GOAL ===== */
 .goal{
@@ -103,12 +112,12 @@ body{
 
 /* ===== PLAYERS ===== */
 .player{
-  position:absolute; width:90px; height:170px;
-  display:flex; flex-direction:column; align-items:center;
-  top:50%; transform:translateY(-50%);
+  top: 58%;
 }
-.player.dragon{ left:260px; cursor:pointer; }
-.player.panda{ left:520px; }
+
+.player.dragon{ left: 20%; }
+.player.panda{ left: 60%; }
+
 
 .face{ width:64px; height:56px; border-radius:50% 50% 40% 40%; position:relative; }
 .face.dragon{
@@ -137,13 +146,14 @@ body{
 
 body{
   margin:0;
-  min-height:100svh;      /* Samsung-safe */
-  display:grid;
-  place-items:center;
+  min-height:100svh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   background:#05070f;
-  font-family:system-ui;
   overflow:hidden;
 }
+
 
 .leg{ width:14px; height:34px; background:#123; border-radius:8px; margin-top:-6px; }
 
@@ -158,11 +168,13 @@ body{
   top:300px; width:260px; padding:12px 14px; font-size:13px; opacity:1;
 }
 .speech.story{
-  top:clamp(40px, 8vh, 80px);
-  width:min(520px, 92vw);
-  padding:18px;
-  font-size:clamp(14px, 3.2vw, 15px);
+  top: 8%;
+  width: 90%;
+  max-width: 360px;
+  padding: 16px;
+  font-size: 14px;
 }
+
 
 .speech.show{ opacity:1; }
 
@@ -201,7 +213,7 @@ body{
   background:
     radial-gradient(circle at 30% 30%, #fff 35%, #000 36% 45%, #fff 46%);
   border-radius:50%;
-  transform:translate(-50%,-50%) scale(0);
+  transform:translate(-50%,-50%) scale(55);
   z-index:9999;
   transition:transform .7s cubic-bezier(.6,0,.2,1);
 }
@@ -304,7 +316,7 @@ window.addEventListener("load", () => {
 
   /* STEP 1 — kick ball */
   setTimeout(() => {
-    ball.style.left = "92%";
+    ball.style.left = "85%";
 
     /* crowd cheer */
     document.querySelectorAll(".fan").forEach(f => {
