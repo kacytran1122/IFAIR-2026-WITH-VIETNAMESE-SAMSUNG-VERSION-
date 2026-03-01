@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="devices.css">
 <style>
-/* ================= ROOT ================= */
+
 :root{
   --gold:#d4af37;
   --gold-soft:#f3d27a;
@@ -17,7 +17,7 @@
   --bubble:#ffffff;
 }
 
-/* ================= SCENE ================= */
+
 html,body{
   margin:0;
   height:100%;
@@ -29,12 +29,12 @@ html,body{
 .scene6{
   position:relative;
   width:100%;
-  height:100svh; /* ✅ mobile-safe viewport */
+  height:100svh; 
   background:linear-gradient(#0b1c3a 45%, #071225);
 }
 
 
-/* ================= WATER ================= */
+
 .water{
   position:absolute;
   bottom:0;
@@ -51,7 +51,7 @@ html,body{
   50%{ transform:translateY(6px); }
 }
 
-/* ================= BOAT ================= */
+
 .boat{
   position:absolute;
   left:30%;
@@ -68,12 +68,12 @@ html,body{
   50%{ transform:translateY(8px); }
 }
 
-/* ================= DRAGON ================= */
+
 .dragon{
-  position:absolute;      /* 👈 anchor to boat */
-  left:90px;              /* centered on hull */
-  bottom:35px;             /* 👈 sits INSIDE boat */
-  pointer-events:none;    /* NO CLICK */
+  position:absolute;      
+  left:90px;             
+  bottom:35px;           
+  pointer-events:none;    
   animation:dragonBreathe 4s ease-in-out infinite;
   filter:drop-shadow(0 0 10px rgba(255,210,120,.45));
 }
@@ -90,9 +90,6 @@ html,body{
   }
 }
 
-
-
-/* head */
 .head{
   position:relative;
   width:60px;
@@ -101,7 +98,6 @@ html,body{
   border-radius:60%;
 }
 
-/* horns */
 .horn{
   position:absolute;
   top:-14px;
@@ -113,7 +109,6 @@ html,body{
 .horn.left{ left:12px; transform:rotate(-15deg); }
 .horn.right{ right:12px; transform:rotate(15deg); }
 
-/* eyes */
 .eye{
   position:absolute;
   top:26px;
@@ -125,7 +120,6 @@ html,body{
 .eye.left{ left:18px; }
 .eye.right{ right:18px; }
 
-/* body */
 .body{
   position:absolute;
   top:38px;
@@ -136,7 +130,6 @@ html,body{
   border-radius:20px;
 }
 
-/* arm (rowing) */
 .arm{
   position:absolute;
   top:50px;
@@ -154,7 +147,6 @@ html,body{
   50%{ transform:rotate(-22deg); }
 }
 
-/* ================= OAR ================= */
 .oar{
   position:absolute;
   left:180px;
@@ -172,13 +164,12 @@ html,body{
   50%{ transform:rotate(-18deg); }
 }
 
-/* ================= SPEECH BUBBLE ================= */
 .speech{
   position:absolute;
   right:8%;
   top:20%;
   max-width:320px;
-  width:clamp(240px, 86vw, 320px); /* 👈 KEY FIX */
+  width:clamp(240px, 86vw, 320px); 
   padding:18px 22px;
   background:var(--bubble);
   color:#111;
@@ -212,7 +203,7 @@ html,body{
   color:#0b1c3a;
   font-size:16px;
 }
-/* ================= FLIGHT TRANSITION ================= */
+
 #flight-transition{
   position:fixed;
   inset:0;
@@ -230,7 +221,6 @@ html,body{
   opacity:1;
 }
 
-/* globe */
 .globe{
   position:absolute;
   left:50%;
@@ -249,7 +239,6 @@ html,body{
   transform:translate(-50%,-50%) scale(1);
 }
 
-/* plane */
 .plane{
   position:absolute;
   left:50%;
@@ -275,9 +264,7 @@ html,body{
     transform:translate(-50%,-50%) rotate(300deg) translateX(140px);
   }
 }
-/* =========================
-   SAMSUNG / TALL ANDROID FIX
-========================= */
+
 @media (max-width: 430px) and (min-aspect-ratio: 9/18) {
 
   .speech{
@@ -340,19 +327,17 @@ html,body{
 const speech = document.getElementById("speech");
 const flight = document.getElementById("flight-transition");
 
-/* show speech */
+
 setTimeout(() => {
   speech.classList.add("show");
 }, 3200);
 
-/* transition */
+
 setTimeout(() => {
   document.querySelector(".scene6")
     .style.filter = "blur(3px) brightness(.85)";
   flight.classList.add("active");
-}, 13000);   // generous reading time
-
-/* go to ending */
+}, 13000);   
 setTimeout(() => {
   window.location.href = "ending.html";
 }, 14000);
@@ -369,3 +354,4 @@ setTimeout(() => {
 
 </body>
 </html>
+
