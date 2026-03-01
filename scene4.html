@@ -18,15 +18,15 @@ body{
   font-family:system-ui;
 }
 
-/* ================= SCENE ================= */
+
 .scene{
   position:relative;
   width:100%;
-  height:100svh;     /* mobile-safe full height */
-  max-width:none;    /* CRITICAL */
-  aspect-ratio:auto; /* CRITICAL */
+  height:100svh;    
+  max-width:none;    
+  aspect-ratio:auto; 
   overflow:hidden;
-  border-radius:0;   /* edge-to-edge on phones */
+  border-radius:0;   
   background:
     radial-gradient(circle at 50% 30%, rgba(255,210,140,.18), transparent 45%),
     linear-gradient(180deg,#2a1a10,#120b07 70%);
@@ -40,7 +40,6 @@ body{
   pointer-events:none;
 }
 
-/* ================= DOOR ================= */
 .door-frame{
   position:absolute;
   left:50%;
@@ -72,7 +71,7 @@ body{
   background:#d8b070;
 }
 
-/* ================= HAND ================= */
+
 .hand{
   position:absolute;
   left:calc(50% + 140px);
@@ -112,7 +111,7 @@ body{
   50%{ transform:translateX(10px); }
 }
 
-/* ================= INSIDE ================= */
+
 .inside{
   position:absolute;
   inset:0;
@@ -126,7 +125,7 @@ body{
 }
 .inside.show{ opacity:1; }
 
-/* ================= DRAGON ================= */
+
 .dragon{
   margin-bottom:52px;
 }
@@ -173,7 +172,7 @@ body{
   transform:translateX(-50%);
 }
 
-/* ================= TABLE ================= */
+
 .table{
   width:200px;
   height:14px;
@@ -183,7 +182,7 @@ body{
   position:relative;
 }
 
-/* ================= BOWL ================= */
+
 .bowl{
   position:absolute;
   left:50%;
@@ -226,7 +225,7 @@ body{
   border-radius:50%;
 }
 
-/* ================= CHOPSTICKS ================= */
+
 .chopsticks{
   position:absolute;
   left:50%;
@@ -251,7 +250,7 @@ body{
   70%{ transform:translate(-50%,-10px) rotate(6deg); }
 }
 
-/* ================= SPEECH ================= */
+
 .speech{
   position:absolute;
   left:50%;
@@ -272,11 +271,11 @@ body{
 }
 .speech.show{ opacity:1; }
 
-/* tail pointing to dragon mouth */
+
 .speech::after{
   content:"";
   position:absolute;
-  left:55%;              /* 👈 aligns with snout */
+  left:55%;             
   bottom:-18px;
   border-width:16px 12px 0 12px;
   border-style:solid;
@@ -286,7 +285,7 @@ body{
     transparent
     transparent;
 }
-/* ================= STEAM TRANSITION ================= */
+
 #steam-transition{
   position:fixed;
   inset:0;
@@ -308,7 +307,7 @@ body{
   filter:blur(0);
 }
 
-/* dragon click cue */
+
 .dragon{
   pointer-events:none;
   animation:dragonGlow 3.2s ease-in-out infinite;
@@ -319,9 +318,7 @@ body{
   0%,100%{ transform:scale(1); }
   50%{ transform:scale(1.03); }
 }
-/* =========================
-   SAMSUNG / TALL ANDROID FIX
-========================= */
+
 @media (max-width: 430px) and (min-aspect-ratio: 9/18) {
 
   body{
@@ -329,27 +326,27 @@ body{
     place-items:stretch;
   }
 
-  /* Scene fills full vertical screen */
+ 
   .scene{
     height:100svh;
     width:100%;
   }
 
-  /* Door scales + shifts upward */
+  
   .door-frame{
     width:200px;
     height:320px;
     top:44%;
   }
 
-  /* Hand stays aligned with door */
+  
   .hand{
     left:calc(50% + 110px);
     top:calc(44% + 10px);
     transform:scale(.85);
   }
 
-  /* Inside content tighter */
+  
   .inside{
     padding-top:24px;
   }
@@ -358,7 +355,7 @@ body{
     margin-bottom:36px;
   }
 
-  /* Table + bowl scale down */
+  
   .table{
     width:180px;
   }
@@ -369,13 +366,13 @@ body{
     top:-52px;
   }
 
-  /* Chopsticks shorter */
+  
   .chopsticks{
     height:90px;
     top:-110px;
   }
 
-  /* 🔥 SPEECH FIX (MOST IMPORTANT) */
+ 
   .speech{
     width:92vw;
     max-width:92vw;
@@ -387,7 +384,7 @@ body{
     padding:14px 16px;
   }
 
-  /* Speech tail centers */
+ 
   .speech::after{
     left:50%;
     bottom:-14px;
@@ -405,7 +402,7 @@ body{
 <body>
 <div class="scene">
 
-  <!-- Door -->
+
   <div class="door-frame">
     <div class="inside" id="inside">
       <div class="dragon">
@@ -436,7 +433,7 @@ body{
     </div>
   </div>
 
-  <!-- Hand -->
+ 
   <div class="hand" id="hand">
     <div class="palm"></div>
     <div class="finger f1"></div>
@@ -444,7 +441,6 @@ body{
     <div class="finger f3"></div>
   </div>
 
-  <!-- Speech -->
   <div class="speech" id="speech">
     Stressed? Hungry? Emotionally attached to noodles?<br><br>
     <strong>Bún thịt nướng</strong> has smoky pork, fresh herbs, and rice noodles that understand your feeling.<br><br>
@@ -462,41 +458,40 @@ const inside = document.getElementById("inside");
 const speech = document.getElementById("speech");
 const steam  = document.getElementById("steam-transition");
 
-/* ================= AUTOPLAY TIMELINE ================= */
 
-// knock
+
+
 setTimeout(() => {
   hand.style.opacity = 1;
   hand.classList.add("knock");
 }, 500);
 
-// stop knock, hide hand
+
 setTimeout(() => {
   hand.classList.remove("knock");
   hand.classList.add("hide");
 }, 2000);
 
-// open door
 setTimeout(() => {
   door.style.transform = "rotateY(-75deg)";
 }, 2400);
 
-// reveal inside (dragon + food)
+
 setTimeout(() => {
   inside.classList.add("show");
 }, 3200);
 
-// show speech
+
 setTimeout(() => {
   speech.classList.add("show");
 }, 5000);
 
-// steam transition
+
 setTimeout(() => {
   steam.classList.add("active");
 }, 9800);
 
-// go to next scene
+
 setTimeout(() => {
   window.location.href = "scene6.html";
 }, 11000);
@@ -504,4 +499,5 @@ setTimeout(() => {
 
 </body>
 </html>
+
 
