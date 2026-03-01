@@ -18,7 +18,7 @@ body{
   font-family:system-ui;
 }
 
-/* ================= SCENE ================= */
+
 .scene{
   width:900px;
   max-width:95vw;
@@ -39,7 +39,7 @@ body{
   pointer-events:none;
 }
 
-/* ================= DRAGON ================= */
+
 .dragon{
   position:absolute;
   left:24px;
@@ -114,7 +114,7 @@ body{
   height:8px;
 }
 
-/* ================= FIRE ================= */
+
 .fire-core,.fire-glow,.fire-ember{
   position:absolute;
   border-radius:50%;
@@ -151,7 +151,7 @@ body{
   to{ transform:translate(calc(var(--dx)*1.2),calc(var(--dy)*1.2)); opacity:0; }
 }
 
-/* ================= IMAGES ================= */
+
 .memories{
   position:absolute;
   top:40%;
@@ -182,12 +182,12 @@ body{
   color:#eef3ff;
 }
 
-/* ================= SPEECH ================= */
+
 .speech{
   max-height:55svh;
   overflow-y:auto;
-  overscroll-behavior: contain; /* FIX 2 */
-  box-sizing:border-box;        /* FIX 2 */
+  overscroll-behavior: contain; 
+  box-sizing:border-box;       
 
   position:absolute;
   left:210px;
@@ -219,12 +219,10 @@ body{
   border-style:solid;
   border-color:transparent rgba(245,250,255,.96) transparent transparent;
 }
-/* =========================
-   SAMSUNG / TALL ANDROID FIX
-========================= */
+
 @media (max-width: 430px) and (min-aspect-ratio: 9/18) {
 
-  /* Let scene fill the phone naturally */
+ 
   .scene{
     width:100%;
     height:100svh;
@@ -232,7 +230,7 @@ body{
     border-radius:0;
   }
 
-  /* Reflow memories */
+
   .memories{
     top:48%;
     gap:14px;
@@ -248,7 +246,7 @@ body{
     font-size:13px;
   }
 
-  /* Speech bubble — THIS IS THE KEY FIX */
+  
   .speech{
     left:50%;
     bottom:35svh;
@@ -264,7 +262,7 @@ body{
     transform:translateX(-50%) translateY(0);
   }
 
-  /* Tail centers automatically */
+
   .speech::after{
     left:50%;
     bottom:-14px;
@@ -281,7 +279,7 @@ body{
 <body>
 <div class="scene" id="scene">
 
-  <!-- Dragon -->
+
   <div class="dragon" id="dragon">
     <div class="head">
       <div class="horn left"></div>
@@ -295,7 +293,7 @@ body{
     </div>
   </div>
 
-  <!-- Images -->
+  
   <div class="memories" id="memories">
     <div class="memory"><img src="bongda.jpg"><div class="caption">Soccer</div></div>
     <div class="memory"><img src="keoco.jpg"><div class="caption">Tug of War</div></div>
@@ -303,8 +301,7 @@ body{
     <div class="memory"><img src="shuttlecock.png"><div class="caption">Shuttlecock kicking</div></div>
   </div>
 
-  <!-- Speech -->
-<!-- Speech -->
+ 
 <div class="speech" id="speech">
   <strong>These are the games of our school years.</strong>
   <br>
@@ -327,7 +324,7 @@ const mouth = document.getElementById("mouth");
 const memories = document.getElementById("memories");
 const speech = document.getElementById("speech");
 
-/* ================= FIRE FUNCTION ================= */
+
 function blastFire(tx, ty, delay){
   setTimeout(() => {
     const m = mouth.getBoundingClientRect();
@@ -353,36 +350,36 @@ function blastFire(tx, ty, delay){
   }, delay);
 }
 
-/* ================= AUTO SEQUENCE ================= */
+
 window.addEventListener("load", () => {
 
-  /* Fire → reveal memories */
+  
   const y = scene.clientHeight * 0.42;
   [-260, -90, 90, 260].forEach((d, i) => {
     blastFire(scene.clientWidth / 2 + d, y, i * 260);
   });
 
-  /* Show images */
+
   setTimeout(() => {
     memories.classList.add("show");
   }, 2000);
 
-  /* Show speech */
+
   setTimeout(() => {
     speech.classList.add("show");
   }, 8000);
 
-  /* Final powerful burst */
+
   setTimeout(() => {
     blastFire(scene.clientWidth * 0.6, scene.clientHeight * 0.45, 0);
   }, 12000);
 
-  /* Transition out */
+  
   setTimeout(() => {
     document.getElementById("food-transition")?.classList.add("active");
   }, 18000);
 
-  /* Go to next scene */
+
   setTimeout(() => {
     window.location.href = "scene4.html";
   }, 22000);
@@ -394,6 +391,7 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
+
 
 
 
