@@ -32,12 +32,12 @@ html, body {
 }
 
 
-/* ================= SCENE ================= */
+
 .scene{
   width: 100vw;
-  max-width: 430px;           /* Samsung phone width */
+  max-width: 430px;           
   height: 100svh;
-  max-height: 900px;          /* safe for tall devices */
+  max-height: 900px;          
   aspect-ratio: 9 / 16;
 
   position: relative;
@@ -47,8 +47,6 @@ html, body {
 
 
 
-
-/* ===== STANDS ===== */
 .stands{
   position: absolute;
   top: 0;
@@ -110,7 +108,6 @@ html, body {
 
 
 
-/* ===== GOAL ===== */
 .goal{
   position:absolute; right:0; top:50%;
   width:120px; height:160px; border:4px solid #fff; transform:translateY(-50%);
@@ -123,7 +120,6 @@ html, body {
   background-size:16px 16px; opacity:.6;
 }
 
-/* ===== BALL ===== */
 .ball{
   position:absolute;
   width:22px;
@@ -137,7 +133,7 @@ html, body {
 }
 
 
-/* ===== PLAYERS ===== */
+
 .player{
   position: absolute;
   top: 58%;
@@ -178,7 +174,7 @@ html, body {
 
 .leg{ width:14px; height:34px; background:#123; border-radius:8px; margin-top:-6px; }
 
-/* ===== SPEECH ===== */
+
 .speech{
   position:absolute; left:50%; transform:translateX(-50%);
   background:#fff; border-radius:20px; line-height:1.5;
@@ -199,7 +195,7 @@ html, body {
 
 .speech.show{ opacity:1; }
 
-/* ===== CTA ===== */
+
 .cta{
   display:block;
   margin:22px auto 0;
@@ -223,8 +219,6 @@ html, body {
   100%{ background-position:0% 50%; }
 }
 
-/* ===== TRANSITION TO SCENE 3 ===== */
-/* ===== SOCCER BALL ZOOM TRANSITION ===== */
 #ball-transition{
   position:fixed;
   left:50%;
@@ -318,7 +312,7 @@ html, body {
 <div id="ball-transition"></div>
 
 <script>
-/* ================= CROWD SETUP ================= */
+
 const stands = document.getElementById("stands");
 for (let r = 0; r < 5; r++) {
   const row = document.createElement("div");
@@ -332,34 +326,33 @@ for (let r = 0; r < 5; r++) {
   stands.appendChild(row);
 }
 
-/* ================= ELEMENTS ================= */
-/* ================= ELEMENTS ================= */
+
 const ball = document.getElementById("ball");
 const hint = document.getElementById("hint");
 const story = document.getElementById("story");
 const transitionBall = document.getElementById("ball-transition");
 const goal = document.querySelector(".goal");
 
-/* ================= SCENE START ================= */
+
 function startScene() {
 
   hint.style.display = "none";
 
-  // Give layout time to settle
+
   setTimeout(() => {
 
-    // Measure AFTER layout is stable
+    
     const goalRect = goal.getBoundingClientRect();
     const ballRect = ball.getBoundingClientRect();
 
-    // Distance from ball to goal
+    
     const dx = goalRect.left - ballRect.left + 40;
 
-    // Animate using transform (GPU-accelerated)
+    
     ball.style.transform =
       `translate(-50%,-50%) translateX(${dx}px)`;
 
-    // Crowd reaction
+     Crowd reaction
     document.querySelectorAll(".fan").forEach(f => {
       if (Math.random() < 0.65) {
         f.classList.add("cheer");
@@ -369,12 +362,12 @@ function startScene() {
 
   }, 1200);
 
-  // Story appears
+   Story appears
   setTimeout(() => {
     story.classList.add("show");
   }, 2200);
 
-  // Transition to next scene
+   Transition to next scene
   setTimeout(() => {
     transitionBall.classList.add("active");
   }, 8000);
@@ -393,14 +386,14 @@ window.addEventListener("load", () => {
 
 
 
-/* ================= AUTO PLAY SEQUENCE ================= */
+
 window.addEventListener("load", () => {
   setTimeout(startScene, 600);
 });
 
 
 
-  /* hide click hint immediately */
+ 
   
 </script>
 
@@ -408,6 +401,7 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
+
 
 
 
