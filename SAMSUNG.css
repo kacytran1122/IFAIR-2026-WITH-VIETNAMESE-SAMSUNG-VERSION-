@@ -1,6 +1,4 @@
-/* ===========================
-   BASE — ALL DEVICES
-=========================== */
+
 
 html, body {
   margin: 0;
@@ -22,7 +20,7 @@ canvas, img {
   display: block;
 }
 
-/* Safe typography */
+
 h1 {
   font-size: clamp(18px, 4vw, 34px);
 }
@@ -30,9 +28,7 @@ p {
   font-size: clamp(13px, 3vw, 16px);
 }
 
-/* ===========================
-   ANDROID / SAMSUNG (FIXED)
-=========================== */
+
 @media (max-width: 900px) and (orientation: portrait) {
 
   .bubble {
@@ -53,9 +49,6 @@ p {
   }
 }
 
-/* ===========================
-   COMPUTER
-=========================== */
 @media (min-width: 1024px) {
 
   .scene {
@@ -81,4 +74,5 @@ p {
     font-size: 18px;
   }
 }
+
 
