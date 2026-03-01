@@ -34,15 +34,15 @@
   position:relative;
   width:100%;
   height:100svh;
-  inset:auto;           /* IMPORTANT */
-  border-radius:0;      /* phones edge-to-edge */
+  inset:auto;           
+  border-radius:0;      
   overflow:hidden;
   border:none;
   background:rgba(255,255,255,.04);
 }
 
 
-  /* Canvas must be the same size as its box */
+ 
   canvas{
     position:absolute;
     inset:0;
@@ -51,7 +51,7 @@
     display:block;
   }
 
-  /* Labels */
+
   .label{
     position:absolute;
     padding:8px 12px;
@@ -69,7 +69,7 @@
     font-weight:600;
   }
 
-  /* Plane */
+
   .plane{
     position:absolute;
     font-size:18px;
@@ -78,7 +78,7 @@
     pointer-events:none;
   }
 
-  /* Arrival bubble */
+
   .bubble{
     position:absolute;
     left:50%;
@@ -97,7 +97,7 @@
   }
   .bubble.show{
   opacity:1;
-  pointer-events:auto;   /* ✅ THIS is the key */
+  pointer-events:auto;   
 }
 
 .bubble h1{
@@ -114,7 +114,6 @@
   line-height:1.35;
 }
 
-  /* CTA BUTTON — PORTAL STYLE */
   .cta.portal{
     display:inline-block;
     margin:22px auto 0;
@@ -139,8 +138,6 @@
       0 32px 80px rgba(0,0,0,.65);
   }
 
-
-  /* Small corner hint (optional) */
   .hint{
     position:absolute;
     top:16px;
@@ -213,7 +210,6 @@
   const planeEl  = document.getElementById("plane");
   const bubble   = document.getElementById("bubble");
 
-  // --- Correct canvas sizing (prevents the “quarter globe” bug) ---
   function resize(){
     const rect = canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
@@ -221,24 +217,22 @@
     canvas.width  = Math.round(rect.width  * dpr);
     canvas.height = Math.round(rect.height * dpr);
 
-    // draw in CSS pixels (so positions match DOM labels)
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   window.addEventListener("resize", () => { resize(); restart(); }, { passive:true });
-    // Make CTA actually navigable (stop replay hijacking)
+    
   const cta = document.getElementById("ctaLink");
 
   cta.addEventListener("click", (e) => {
-    e.stopPropagation(); // prevents restart()
+    e.stopPropagation(); 
   });
 
 
-  // --- Geo points ---
-  // Vietnam (rough center) and Chicago
+
   const VN  = { lat: 14.06, lon: 108.28 };
   const CHI = { lat: 41.88, lon: -87.63 };
 
-  // Convert lat/lon to 3D vector on unit sphere
+  
   function llToVec(latDeg, lonDeg){
     const lat = latDeg * Math.PI/180;
     const lon = lonDeg * Math.PI/180;
@@ -249,7 +243,7 @@
     };
   }
 
-  // Rotate by yaw (Y axis) then pitch (X axis)
+ 
   function rotate(v, yaw, pitch){
     const cy = Math.cos(yaw), sy = Math.sin(yaw);
     let x =  v.x*cy + v.z*sy;
@@ -263,14 +257,13 @@
     return { x, y:y2, z:z2 };
   }
 
-  // Perspective projection (CSS pixel coords)
   function project(v, cx, cy, r){
-    const depth = 2.6;               // larger => less perspective
-    const s = r / (depth - v.z);     // perspective scale
+    const depth = 2.6;               
+    const s = r / (depth - v.z);    
     return { x: cx + v.x*s, y: cy - v.y*s, s };
   }
 
-  // Great-circle interpolation using slerp (correct for far regions)
+
   function slerp(a, b, t){
     const dot = a.x*b.x + a.y*b.y + a.z*b.z;
     const omega = Math.acos(Math.max(-1, Math.min(1, dot)));
@@ -281,28 +274,26 @@
     return { x: a.x*s1 + b.x*s2, y: a.y*s1 + b.y*s2, z: a.z*s1 + b.z*s2 };
   }
 
-  // Easing
+
   const clamp01 = t => Math.max(0, Math.min(1, t));
   const easeInOut = t => {
     t = clamp01(t);
     return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
   };
 
-  // Precompute vectors
+
   const vVN  = llToVec(VN.lat, VN.lon);
   const vCHI = llToVec(CHI.lat, CHI.lon);
 
-  // --- Animation timeline ---
-  // Phase A: rotate to center Vietnam (0..A)
-  // Phase B: fly VN -> CHI while still slightly rotating (A..1)
-  const ROTATE_PHASE = 0.35;         // portion of total time
+
+  const ROTATE_PHASE = 0.35;       
   const TOTAL_MS = 9200;
 
   let t0 = null;
   let raf = null;
 
   function drawSphere(cx, cy, r){
-    // glow body
+  
     const g = ctx.createRadialGradient(cx - r*0.38, cy - r*0.38, r*0.22, cx, cy, r);
     g.addColorStop(0, "rgba(255,255,255,0.26)");
     g.addColorStop(0.45, "rgba(120,145,255,0.10)");
@@ -312,14 +303,14 @@
     ctx.arc(cx, cy, r, 0, Math.PI*2);
     ctx.fill();
 
-    // rim
+  
     ctx.strokeStyle = "rgba(255,255,255,0.16)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI*2);
     ctx.stroke();
 
-    // atmosphere
+  
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
     ctx.strokeStyle = "rgba(110,140,255,0.10)";
@@ -338,7 +329,7 @@
 
     ctx.lineWidth = 1;
 
-    // latitudes
+   
     ctx.strokeStyle = "rgba(255,255,255,0.10)";
     for (let lat=-60; lat<=60; lat+=30){
       ctx.beginPath();
@@ -354,7 +345,7 @@
       ctx.stroke();
     }
 
-    // longitudes
+    
     ctx.strokeStyle = "rgba(255,255,255,0.08)";
     for (let lon=-150; lon<=150; lon+=30){
       ctx.beginPath();
@@ -374,7 +365,7 @@
   }
 
   function drawFlightPath(cx, cy, r, yaw, pitch, prog){
-    // prog: 0..1, draw partial path up to prog
+    
     ctx.save();
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI*2);
@@ -402,7 +393,7 @@
     const v = rotate(vec, yaw, pitch);
     const p = project(v, cx, cy, r);
 
-    // if on back hemisphere, softly hide
+  
     el.style.opacity = (v.z > 0.05) ? "1" : "0.18";
     el.style.left = p.x + "px";
     el.style.top  = p.y + "px";
@@ -418,32 +409,30 @@
     const w = rect.width;
     const h = rect.height;
 
-    // Correct center & safe radius => full circular globe always visible
+
     const cx = w * 0.52;
     const cy = h * 0.50;
-    const r  = Math.min(w, h) * 0.28;   // safe: never clips
+    const r  = Math.min(w, h) * 0.28;   
 
     ctx.clearRect(0,0,w,h);
 
-    // Phase split
-    const a = clamp01(t / ROTATE_PHASE);            // 0..1 rotate-to-VN
+   
+    const a = clamp01(t / ROTATE_PHASE);            
     const b = (t < ROTATE_PHASE) ? 0 : clamp01((t - ROTATE_PHASE) / (1 - ROTATE_PHASE));
     const aE = easeInOut(a);
     const bE = easeInOut(b);
 
-    // Rotation:
-    // - yaw aims Vietnam to face camera during phase A
-    // - then slowly continues a little during flight for cinematic feel
-    const yawVN  = -(VN.lon * Math.PI/180);         // yaw that faces VN
-    const yawCHI = -(CHI.lon * Math.PI/180);        // yaw that faces Chicago (approx)
-    const yaw = yawVN * aE + (yawCHI * 0.35) * bE;  // blend
+  
+    const yawVN  = -(VN.lon * Math.PI/180);         
+    const yawCHI = -(CHI.lon * Math.PI/180);        
+    const yaw = yawVN * aE + (yawCHI * 0.35) * bE;  
     const pitch = -0.18;
 
-    // Draw globe (sphere + grid)
+  
     drawSphere(cx, cy, r);
     drawGraticule(cx, cy, r, yaw, pitch);
 
-    // Flight path and plane after phase A begins
+
     if (b > 0){
       drawFlightPath(cx, cy, r, yaw, pitch, b);
 
@@ -451,19 +440,19 @@
       const vr = rotate(vv, yaw, pitch);
       const pp = project(vr, cx, cy, r);
 
-      // hide plane if it goes behind the globe
+     
       planeEl.style.opacity = (vr.z > 0.02) ? "1" : "0.10";
       planeEl.style.left = pp.x + "px";
       planeEl.style.top  = pp.y + "px";
 
-      // rotate plane roughly along direction (screen-space tangent)
+    
       const vv2 = slerp(vVN, vCHI, Math.min(1, bE + 0.01));
       const vr2 = rotate(vv2, yaw, pitch);
       const pp2 = project(vr2, cx, cy, r);
       const ang = Math.atan2(pp2.y - pp.y, pp2.x - pp.x) * 180/Math.PI;
       planeEl.style.transform = `translate(-50%,-50%) rotate(${ang}deg)`;
     } else {
-      // before flight, park plane near VN
+    
       const vnRot = rotate(vVN, yaw, pitch);
       const vnP   = project(vnRot, cx, cy, r);
       planeEl.style.left = (vnP.x + 14) + "px";
@@ -471,11 +460,11 @@
       planeEl.style.opacity = "0";
     }
 
-    // Labels
+
     placeLabel(vnLabel, cx, cy, r, yaw, pitch, vVN);
     placeLabel(chiLabel, cx, cy, r, yaw, pitch, vCHI);
 
-    // Bubble appears at arrival
+    
     if (t > 0.92) bubble.classList.add("show");
     else bubble.classList.remove("show");
 
@@ -490,14 +479,15 @@
     raf = requestAnimationFrame(draw);
   }
 
-  // Boot
+
   resize();
   restart();
 
-  // Click to replay
+
   window.addEventListener("click", restart, { passive:true });
 })();
 </script>
 </body>
 </html>
+
 
