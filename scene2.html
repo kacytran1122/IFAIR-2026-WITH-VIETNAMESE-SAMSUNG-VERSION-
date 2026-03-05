@@ -297,7 +297,7 @@ html, body {
   </div>
 
   <div class="speech hint" id="hint">
-    <strong>Psst… click me 😄</strong><br>
+    <strong>Psst… just a sec 😄</strong><br>
     I’ve got a story to tell.
   </div>
 
@@ -314,18 +314,20 @@ html, body {
 <script>
 
 const stands = document.getElementById("stands");
+
 for (let r = 0; r < 5; r++) {
   const row = document.createElement("div");
   row.className = "row";
+
   for (let i = 0; i < 30; i++) {
     const f = document.createElement("div");
     f.className = "fan";
     f.innerHTML = '<div class="fan-head"></div><div class="fan-body"></div>';
     row.appendChild(f);
   }
+
   stands.appendChild(row);
 }
-
 
 const ball = document.getElementById("ball");
 const hint = document.getElementById("hint");
@@ -333,26 +335,21 @@ const story = document.getElementById("story");
 const transitionBall = document.getElementById("ball-transition");
 const goal = document.querySelector(".goal");
 
-
 function startScene() {
 
   hint.style.display = "none";
 
-
   setTimeout(() => {
 
-    
     const goalRect = goal.getBoundingClientRect();
     const ballRect = ball.getBoundingClientRect();
 
-    
     const dx = goalRect.left - ballRect.left + 40;
 
-    
     ball.style.transform =
       `translate(-50%,-50%) translateX(${dx}px)`;
 
-     Crowd reaction
+    
     document.querySelectorAll(".fan").forEach(f => {
       if (Math.random() < 0.65) {
         f.classList.add("cheer");
@@ -362,12 +359,12 @@ function startScene() {
 
   }, 1200);
 
-   Story appears
+  
   setTimeout(() => {
     story.classList.add("show");
   }, 2200);
 
-   Transition to next scene
+  
   setTimeout(() => {
     transitionBall.classList.add("active");
   }, 8000);
@@ -375,16 +372,8 @@ function startScene() {
   transitionBall.addEventListener("transitionend", () => {
     window.location.href = "scene3.html";
   });
+
 }
-
-/* ================= AUTO PLAY ================= */
-window.addEventListener("load", () => {
-  startScene();
-});
-
-
-
-
 
 
 window.addEventListener("load", () => {
@@ -401,6 +390,7 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
+
 
 
 
