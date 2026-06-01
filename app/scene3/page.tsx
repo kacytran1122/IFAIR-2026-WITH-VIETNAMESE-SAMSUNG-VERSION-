@@ -43,7 +43,7 @@ export default function Scene3() {
           el.style.setProperty("--dx", dx + "px");
           el.style.setProperty("--dy", dy + "px");
           scene.appendChild(el);
-          setTimeout(() => el.remove(), 1800);
+          setTimeout(() => { if (el.isConnected) el.remove(); }, 1800);
         });
       }
     }, delay);
