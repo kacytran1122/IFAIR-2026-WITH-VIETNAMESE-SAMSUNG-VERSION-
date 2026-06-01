@@ -38,93 +38,88 @@
   z-index: 20;
 }
 
+/* Dragon uses scene1-style percentage layout so it scales cleanly */
 .dragon {
   position: relative;
-  width: 180px;
-  height: 180px;
+  width: clamp(140px, 14vw, 180px);
   pointer-events: none;
   flex-shrink: 0;
+  filter: drop-shadow(0 0 14px rgba(255, 200, 80, 0.45));
 }
 
+/* Head fills dragon width with a fixed ratio; margin-top reserves horn space */
 .head {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 150px;
-  height: 130px;
-  background: linear-gradient(145deg, #d4af37, #b8860b);
-  border-radius: 60% 60% 55% 55%;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  aspect-ratio: 13 / 11;
+  background: linear-gradient(145deg, #d4a017, #b8860b);
+  border-radius: 60% 60% 50% 50%;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  margin-top: 40px;
 }
 
 .horn {
   position: absolute;
-  height: 44px;
-  width: 10px;
-  background: linear-gradient(to top, #d4af37, #f5d76e);
-  border-radius: 8px;
+  top: -32px;
+  width: 11px;
+  height: 40px;
+  background: linear-gradient(to top, #d4a017, #f5d76e);
+  border-radius: 6px 6px 4px 4px;
   transform-origin: bottom center;
 }
 .horn.left {
-  left: 25%;
-  top: -30px;
-  transform: rotate(-12deg);
+  left: 28%;
+  transform: rotate(-10deg);
 }
 .horn.right {
-  right: 25%;
-  top: -30px;
-  transform: rotate(12deg);
+  right: 28%;
+  transform: rotate(10deg);
 }
 
 .eye {
   position: absolute;
-  top: 42%;
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle at 35% 35%, #4a2a0f, #1a0800);
+  top: 40%;
+  width: 11px;
+  height: 11px;
+  background: radial-gradient(circle at 35% 35%, #4a2a0f, #1a0a00);
   border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 }
-.eye.left {
-  left: calc(50% - 26px);
-}
-.eye.right {
-  left: calc(50% + 14px);
-}
+.eye.left  { left: 26%; }
+.eye.right { right: 26%; }
 
 .snout {
   position: absolute;
-  top: 56%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 70px;
-  height: 42px;
+  top: 58%;
+  width: 55%;
+  height: 36%;
   background: linear-gradient(160deg, #f3c95c, #d4a017);
-  border-radius: 24px;
+  border-radius: 20px;
+  transform: translateX(-50%);
 }
 
 .nostril {
   position: absolute;
   top: 50%;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   background: #2a1008;
   border-radius: 50%;
   transform: translateY(-50%);
 }
-.nostril.left {
-  left: 22%;
-}
-.nostril.right {
-  right: 22%;
-}
+.nostril.left  { left: 20%; }
+.nostril.right { right: 20%; }
 
+/* Fire shoots left from mouth — origin aligns with snout left edge */
 .fire {
   position: absolute;
-  right: 125px;
-  top: 88px;
+  /* head margin-top(40) + snout-center-in-head ≈ 40 + 58%*head_h + 18%*head_h */
+  top: 145px;
+  right: 134px;   /* ~snout left edge from right = dragon_w - snout_left */
   width: 0;
-  height: 26px;
-  background: linear-gradient(270deg, #fff7aa, #ffd84a, #ff8c00, #ff2d00);
+  height: 24px;
+  background: linear-gradient(270deg, #fff9c0, #ffd84a, #ff8c00, #ff2d00);
   border-radius: 30px;
   filter: blur(2px);
   opacity: 0;
@@ -133,9 +128,9 @@
   animation: fireLeft 1.4s ease-out forwards;
 }
 @keyframes fireLeft {
-  0% { width: 0; opacity: 0; }
-  10% { opacity: 1; }
-  100% { width: 500px; opacity: 0; }
+  0%   { width: 0;     opacity: 0; }
+  10%  { opacity: 1; }
+  100% { width: 520px; opacity: 0; }
 }
 
 /* ── Speech bubble ── */
@@ -278,37 +273,20 @@
   .dragonCenter {
     left: 50%;
     right: auto;
-    top: 16svh;
+    top: 14svh;
     transform: translateX(-50%);
     flex-direction: column;
     gap: 10px;
   }
   .dragon {
     width: 140px;
-    height: 140px;
   }
-  /* Scale head to fit the smaller dragon container */
   .head {
-    width: 118px;
-    height: 100px;
-  }
-  .horn {
-    height: 34px;
-    width: 8px;
-  }
-  .horn.left {
-    top: -22px;
-  }
-  .horn.right {
-    top: -22px;
-  }
-  .snout {
-    width: 54px;
-    height: 32px;
+    margin-top: 32px;
   }
   .fire {
-    right: 95px;
-    top: 68px;
+    top: 116px;
+    right: 104px;
   }
   .bubble {
     width: min(90vw, 320px);
@@ -317,7 +295,7 @@
   .container {
     grid-template-columns: 1fr;
     gap: 24px;
-    padding: 30svh 16px 20px;
+    padding: 28svh 16px 20px;
   }
   .tree {
     font-size: clamp(11px, 3vw, 15px);
