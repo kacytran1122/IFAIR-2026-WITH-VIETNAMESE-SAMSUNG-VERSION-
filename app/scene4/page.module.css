@@ -1,0 +1,333 @@
+/* ── Scene 4: Bún Thịt Nướng ── */
+
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 210, 140, 0.14), transparent 45%),
+    linear-gradient(180deg, #2a1a10, #120b07 70%);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-sans);
+}
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 180px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+/* ── Door frame ── */
+.doorFrame {
+  position: relative;
+  width: clamp(200px, 28vw, 260px);
+  height: clamp(300px, 44svh, 400px);
+  background: #110c08;
+  border-radius: 6px 6px 0 0;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.door {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #7a4a2a, #4b2a16);
+  transform-origin: left center;
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 5;
+  border-radius: 6px 6px 0 0;
+}
+
+.doorPanel {
+  position: absolute;
+  inset: 16px 16px 16px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+}
+
+.doorHandle {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f0c060, #c08020);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Inside (dragon + food) ── */
+.inside {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: clamp(20px, 5%, 40px);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.inside.show {
+  opacity: 1;
+}
+
+/* ── Dragon ── */
+.dragon {
+  margin-bottom: clamp(30px, 6%, 56px);
+  animation: dragonGlow 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(255, 200, 120, 0.55));
+  pointer-events: none;
+}
+@keyframes dragonGlow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+.head {
+  width: 110px;
+  height: 95px;
+  background: linear-gradient(145deg, #d4a017, #b8860b);
+  border-radius: 60% 60% 50% 50%;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.horn {
+  position: absolute;
+  width: 8px;
+  height: 30px;
+  background: linear-gradient(to top, #d4a017, #f5d76e);
+  border-radius: 5px;
+  top: -24px;
+}
+.horn.left { left: 26px; transform: rotate(-10deg); }
+.horn.right { right: 26px; transform: rotate(10deg); }
+
+.eye {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: radial-gradient(circle at 35% 35%, #4a2a0f, #1a0800);
+  border-radius: 50%;
+  top: 44px;
+}
+.eye.left { left: 30px; }
+.eye.right { right: 30px; }
+
+.snout {
+  position: absolute;
+  left: 50%;
+  top: 60px;
+  width: 52px;
+  height: 32px;
+  background: linear-gradient(160deg, #f3c95c, #d4a017);
+  border-radius: 16px;
+  transform: translateX(-50%);
+}
+
+/* ── Table & bowl ── */
+.table {
+  width: 190px;
+  height: 14px;
+  background: linear-gradient(180deg, #5a3a1f, #3a220f);
+  border-radius: 4px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.bowl {
+  position: absolute;
+  left: 50%;
+  top: -58px;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 65px;
+  background: linear-gradient(180deg, #e8e8e8, #d0d0d0);
+  border-radius: 0 0 70px 70px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.noodles {
+  position: absolute;
+  top: -18px;
+  left: 8px;
+  right: 8px;
+  height: 24px;
+  background: repeating-linear-gradient(90deg, #fff 0 6px, #f0f0f0 6px 12px);
+  border-radius: 18px;
+}
+
+.meat {
+  position: absolute;
+  top: -30px;
+  left: 22px;
+  width: 38px;
+  height: 18px;
+  background: #a03820;
+  border-radius: 6px;
+  box-shadow: 28px 4px 0 #8a2e18;
+}
+
+.herb {
+  position: absolute;
+  top: -36px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, #4a9a4a, #2a6a2a);
+  border-radius: 50%;
+}
+
+/* ── Chopsticks ── */
+.chopsticks {
+  position: absolute;
+  left: 50%;
+  top: -128px;
+  width: 6px;
+  height: 116px;
+  transform-origin: bottom center;
+  animation: eat 2.8s ease-in-out infinite;
+}
+
+.stick {
+  position: absolute;
+  width: 3px;
+  height: 116px;
+  background: linear-gradient(to bottom, #e8c870, #c09040);
+  border-radius: 2px;
+}
+.stick.right {
+  left: 4px;
+}
+
+@keyframes eat {
+  0%, 100% { transform: translate(-50%, 0) rotate(8deg); }
+  40% { transform: translate(-50%, 42px) rotate(-10deg); }
+  70% { transform: translate(-50%, -10px) rotate(6deg); }
+}
+
+/* ── Knocking hand ── */
+.hand {
+  position: absolute;
+  left: calc(50% + clamp(110px, 18vw, 160px));
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 76px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 8;
+}
+
+.palm {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #ddb890, #c49060);
+  border-radius: 10px;
+  margin: auto;
+}
+
+.finger {
+  width: 10px;
+  height: 24px;
+  background: linear-gradient(to bottom, #ddb890, #c49060);
+  border-radius: 6px;
+  position: absolute;
+  top: -20px;
+}
+.f1 { left: 7px; }
+.f2 { left: 18px; }
+.f3 { left: 29px; }
+
+.knock {
+  animation: knock 0.45s ease-in-out infinite;
+}
+@keyframes knock {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(12px); }
+}
+
+/* ── Speech bubble ── */
+.speech {
+  position: absolute;
+  left: 50%;
+  top: 4%;
+  transform: translateX(-50%);
+  width: min(700px, 90vw);
+  padding: 16px 20px;
+  background: rgba(255, 250, 240, 0.97);
+  border-radius: 20px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.55;
+  color: #2a1a10;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 9;
+}
+.speech.show {
+  opacity: 1;
+}
+.speech::after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  bottom: -18px;
+  border-width: 18px 13px 0 13px;
+  border-style: solid;
+  border-color: rgba(255, 250, 240, 0.97) transparent transparent transparent;
+}
+
+.speech p {
+  margin-bottom: 10px;
+}
+.speech p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Steam transition ── */
+.steam {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 65%,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 220, 180, 0.9) 25%,
+    rgba(180, 120, 80, 0.85) 45%,
+    #0c0b09 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.9s ease;
+  filter: blur(12px);
+}
+.steam.active {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .doorFrame {
+    width: 200px;
+    height: 320px;
+  }
+  .hand {
+    left: calc(50% + 110px);
+    transform: translateY(-50%) scale(0.88);
+  }
+  .speech {
+    top: 5svh;
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+  .speech::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,377 @@
+/* ── Scene 1: Golden Dragon & Light ── */
+
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: #05070f;
+  transition: background 1s ease;
+}
+
+.scene.on {
+  background: #1f2b55;
+}
+
+/* ambient glow */
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 18% 18%,
+    rgba(255, 220, 140, 0.55),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+.scene.on .glow {
+  opacity: 1;
+}
+
+/* ── hint text ── */
+.hint {
+  position: absolute;
+  left: 50%;
+  top: 88%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+.hintArrow {
+  font-size: 18px;
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.8; }
+}
+
+/* ── lamp ── */
+.lamp {
+  position: absolute;
+  left: clamp(80px, 14vw, 160px);
+  top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cord {
+  width: 4px;
+  height: 130px;
+  background: linear-gradient(to bottom, #aaa, #ccc);
+  border-radius: 2px;
+  cursor: grab;
+  position: relative;
+  transition: background 0.3s;
+}
+.cord::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+}
+.cord:hover {
+  background: linear-gradient(to bottom, #fff, #ddd);
+}
+.cord:active {
+  cursor: grabbing;
+}
+
+.bulb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #666, #333);
+  margin-top: 8px;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+.scene.on .bulb {
+  background: radial-gradient(circle at 35% 35%, #fffde7, #ffe082);
+  box-shadow: 0 0 20px 6px rgba(255, 235, 100, 0.6);
+}
+
+/* ── wall switch ── */
+.wallSwitch {
+  position: absolute;
+  right: clamp(280px, 38vw, 420px);
+  bottom: clamp(200px, 26svh, 280px);
+  width: 14px;
+  height: 30px;
+  background: #bbb;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.wallSwitch::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #444;
+  border-radius: 2px;
+  transform: translateY(12px);
+  transition: transform 0.3s ease;
+}
+.scene.lightOff .wallSwitch::after {
+  transform: translateY(-4px);
+}
+
+/* ── door ── */
+.doorFrame {
+  position: absolute;
+  right: clamp(80px, 16vw, 200px);
+  bottom: clamp(80px, 12svh, 160px);
+  width: clamp(160px, 22vw, 240px);
+  height: clamp(260px, 40svh, 380px);
+  background: #080c18;
+  border: 2px solid #1a2040;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.door {
+  position: absolute;
+  inset: 8px;
+  background: linear-gradient(160deg, #7a4a2a, #4b2a16);
+  transform-origin: left center;
+  transition: transform 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px 2px 0 0;
+}
+.scene.doorOpen .door {
+  transform: rotateY(-72deg);
+}
+
+.doorHandle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f0c060, #c08020);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.doorPanel {
+  position: absolute;
+  inset: 20px 20px 20px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+/* ── dragon ── */
+.dragon {
+  position: absolute;
+  right: clamp(90px, 18vw, 220px);
+  bottom: clamp(120px, 20svh, 220px);
+  width: clamp(130px, 17vw, 180px);
+  opacity: 0;
+  transform: translateX(50px) scale(0.9);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+  filter: drop-shadow(0 0 18px rgba(255, 200, 80, 0.4));
+}
+.scene.dragonOut .dragon {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.head {
+  width: 100%;
+  aspect-ratio: 13/11;
+  background: linear-gradient(145deg, #d4a017, #b8860b);
+  border-radius: 60% 60% 50% 50%;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.horn {
+  position: absolute;
+  top: -30px;
+  width: 10px;
+  height: 38px;
+  background: linear-gradient(to top, #d4a017, #f5d76e);
+  border-radius: 6px 6px 4px 4px;
+}
+.horn.left {
+  left: 28%;
+  transform: rotate(-10deg);
+}
+.horn.right {
+  right: 28%;
+  transform: rotate(10deg);
+}
+
+.eye {
+  position: absolute;
+  top: 42%;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 35% 35%, #4a2a0f, #1a0a00);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+.eye.left {
+  left: 28%;
+}
+.eye.right {
+  right: 28%;
+}
+
+.snout {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 55%;
+  height: 36%;
+  background: linear-gradient(160deg, #f3c95c, #d4a017);
+  border-radius: 20px;
+  transform: translateX(-50%);
+}
+
+.nostril {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  background: #2a1008;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.nostril.left {
+  left: 22%;
+}
+.nostril.right {
+  right: 22%;
+}
+
+/* ── speech bubble ── */
+.speech {
+  position: absolute;
+  right: clamp(260px, 36vw, 420px);
+  bottom: clamp(260px, 40svh, 380px);
+  width: clamp(240px, 32vw, 340px);
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #1a1a2e;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: scale(0.94) translateY(8px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.speech::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  bottom: 30px;
+  border-width: 10px 0 10px 16px;
+  border-style: solid;
+  border-color: transparent transparent transparent rgba(255, 255, 255, 0.97);
+}
+.scene.dragonOut .speech {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.speechTitle {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: #0a0e1a;
+  margin-bottom: 10px;
+}
+
+.speech p {
+  margin-bottom: 8px;
+}
+.speech p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── page transition overlay ── */
+.transitionOverlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #ffd24a, #b8860b 40%, #05070f 75%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.8s ease;
+}
+.transitionOverlay.active {
+  opacity: 1;
+}
+
+.portal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300vmax;
+  height: 300vmax;
+  background: #05070f;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.transitionOverlay.active .portal {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ── mobile ── */
+@media (max-width: 600px) {
+  .lamp {
+    left: 8vw;
+    top: 5svh;
+  }
+  .doorFrame {
+    right: 5vw;
+    bottom: 10svh;
+    width: 170px;
+    height: 290px;
+  }
+  .dragon {
+    right: 3vw;
+    bottom: 14svh;
+    width: 130px;
+  }
+  .speech {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%) scale(0.94) translateY(8px);
+    bottom: 40svh;
+    width: min(90vw, 320px);
+  }
+  .scene.dragonOut .speech {
+    transform: translateX(-50%) scale(1) translateY(0);
+  }
+  .speech::after {
+    right: auto;
+    left: 50%;
+    bottom: -14px;
+    transform: translateX(-50%) rotate(-90deg);
+    border-width: 10px 10px 0 10px;
+    border-color: rgba(255, 255, 255, 0.97) transparent transparent transparent;
+  }
+  .wallSwitch {
+    right: 28vw;
+    bottom: 30svh;
+  }
+}

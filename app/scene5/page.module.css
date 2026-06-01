@@ -1,0 +1,298 @@
+/* ── Scene 5: Things We Cook in Winter ── */
+
+.scene {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  background: radial-gradient(1400px 800px at 40% 20%, #1b2030, #0f1116);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #e8eaed;
+}
+
+/* ── Title ── */
+.title {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  margin: 0;
+  color: #ffd84a;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 20px rgba(255, 216, 74, 0.45);
+  font-size: clamp(22px, 4vw, 46px);
+  text-align: right;
+  z-index: 10;
+  font-family: var(--font-serif);
+  line-height: 1.3;
+}
+
+/* ── Dragon + bubble ── */
+.dragonCenter {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  z-index: 20;
+}
+
+.dragon {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.head {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 150px;
+  height: 130px;
+  background: linear-gradient(145deg, #d4af37, #b8860b);
+  border-radius: 60% 60% 55% 55%;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+}
+
+.horn {
+  position: absolute;
+  height: 44px;
+  width: 10px;
+  background: linear-gradient(to top, #d4af37, #f5d76e);
+  border-radius: 8px;
+  transform-origin: bottom center;
+}
+.horn.left {
+  left: 25%;
+  top: -30px;
+  transform: rotate(-12deg);
+}
+.horn.right {
+  left: 64%;
+  top: -26px;
+  transform: rotate(12deg);
+}
+
+.eye {
+  position: absolute;
+  top: 42%;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 35% 35%, #4a2a0f, #1a0800);
+  border-radius: 50%;
+}
+.eye.left {
+  left: calc(50% - 26px);
+}
+.eye.right {
+  left: calc(50% + 14px);
+}
+
+.snout {
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 42px;
+  background: linear-gradient(160deg, #f3c95c, #d4a017);
+  border-radius: 24px;
+}
+
+.fire {
+  position: absolute;
+  right: 140px;
+  top: 88px;
+  width: 0;
+  height: 26px;
+  background: linear-gradient(270deg, #ffd84a, #ff8c00, #ff2d00);
+  border-radius: 30px;
+  filter: blur(2px);
+  opacity: 0;
+}
+.fire.active {
+  animation: fireLeft 1.2s ease-out forwards;
+}
+@keyframes fireLeft {
+  0% { width: 0; opacity: 0; }
+  15% { opacity: 1; }
+  100% { width: 460px; opacity: 0; }
+}
+
+/* ── Speech bubble ── */
+.bubble {
+  max-width: 320px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  position: relative;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+}
+.bubble::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 44px;
+  border-width: 12px 18px 12px 0;
+  border-style: solid;
+  border-color: transparent rgba(255, 255, 255, 0.22) transparent transparent;
+}
+.bubble.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Main container ── */
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 60px;
+  padding: 80px 40px 40px;
+}
+
+/* ── ASCII tree ── */
+.tree {
+  margin-top: -10px;
+  font-size: clamp(14px, 2.2vw, 20px);
+  line-height: 1.15;
+  white-space: pre;
+  color: #e8eaed;
+}
+
+.line {
+  display: block;
+  width: 0;
+  overflow: hidden;
+  animation: draw 0.9s steps(40, end) forwards;
+  animation-play-state: paused;
+}
+.tree.play .line {
+  animation-play-state: running;
+}
+.tree.pause .line {
+  animation-play-state: paused;
+}
+@keyframes draw {
+  to { width: 100%; }
+}
+
+.y { color: #ffd84a; }
+.g { color: #33ff66; }
+.r { color: #ff3b30; }
+.o { color: #ff9f0a; }
+
+/* ── Food images ── */
+.right {
+  display: grid;
+  grid-auto-rows: auto;
+  row-gap: 0;
+  margin-top: -60px;
+}
+
+.foodRow {
+  display: flex;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateX(-150px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.foodRow.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.arrow {
+  font-size: 32px;
+  color: #ffd84a;
+  margin-right: 30px;
+  line-height: 1;
+}
+
+.foodImg {
+  display: block;
+  width: 160px !important;
+  height: clamp(80px, 12vh, 100px) !important;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ── Ink bloom transition ── */
+.inkBloom {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 70% 60%, rgba(90, 160, 220, 0.95), transparent 40%),
+    radial-gradient(circle at 40% 55%, rgba(40, 110, 180, 0.9), transparent 45%),
+    #0f1116;
+  opacity: 0;
+  filter: blur(18px);
+  transition: opacity 1s ease, filter 1.2s ease;
+}
+.inkBloom.active {
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .title {
+    top: 12px;
+    right: 14px;
+    font-size: clamp(18px, 6vw, 26px);
+  }
+  .dragonCenter {
+    left: 50%;
+    right: auto;
+    top: 18svh;
+    transform: translateX(-50%);
+    flex-direction: column;
+    gap: 10px;
+  }
+  .dragon {
+    width: 130px;
+    height: 130px;
+  }
+  .fire {
+    top: 58px;
+  }
+  .bubble {
+    width: min(90vw, 320px);
+    font-size: 13px;
+  }
+  .container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24svh 16px 20px;
+  }
+  .tree {
+    font-size: clamp(13px, 3.5vw, 16px);
+    margin-top: 0;
+  }
+  .right {
+    margin-top: 0;
+    row-gap: 14px;
+  }
+  .foodImg {
+    width: 120px !important;
+    height: 88px !important;
+  }
+}

@@ -1,0 +1,327 @@
+/* ── Scene 6: Hạ Long Bay ── */
+
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0b1c3a 0%, #071225 100%);
+  transition: filter 1s ease;
+}
+
+/* ── Sky with stars ── */
+.sky {
+  position: absolute;
+  inset: 0;
+  bottom: 40%;
+  background: linear-gradient(180deg, #020b1a 0%, #0b1c3a 100%);
+}
+.sky::before,
+.sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 40%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 50%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* ── Water ── */
+.water {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 42%;
+  background:
+    radial-gradient(ellipse at 50% 15%, rgba(255, 255, 255, 0.12), transparent 60%),
+    linear-gradient(180deg, #0a2a4f, #04182f);
+  animation: waterMove 4s ease-in-out infinite;
+}
+@keyframes waterMove {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(7px); }
+}
+
+/* ── Limestone islands ── */
+.islands {
+  position: absolute;
+  bottom: 38%;
+  left: 0;
+  right: 0;
+}
+.island {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(180deg, #1a3a2a, #0a1a10);
+  border-radius: 50% 60% 0 0;
+}
+.island1 {
+  left: 5%;
+  width: 80px;
+  height: 130px;
+  background: linear-gradient(160deg, #1a3020, #0a1810);
+}
+.island2 {
+  left: 14%;
+  width: 60px;
+  height: 90px;
+  background: linear-gradient(160deg, #152a1a, #0a1810);
+}
+.island3 {
+  right: 8%;
+  width: 100px;
+  height: 160px;
+  background: linear-gradient(160deg, #1a3020, #0a1810);
+}
+
+/* ── Boat ── */
+.boat {
+  position: absolute;
+  left: 28%;
+  bottom: 30%;
+  animation: boatFloat 3s ease-in-out infinite;
+}
+@keyframes boatFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(9px); }
+}
+
+.boatHull {
+  width: 240px;
+  height: 55px;
+  background: linear-gradient(180deg, #6a3a1c, #3a1e08);
+  border-radius: 0 0 60px 60px;
+}
+
+/* ── Dragon on boat ── */
+.dragonWrapper {
+  position: absolute;
+  left: 70px;
+  bottom: 42px;
+  pointer-events: none;
+  animation: dragonBreathe 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(255, 210, 120, 0.45));
+}
+@keyframes dragonBreathe {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(255, 210, 120, 0.35));
+  }
+  50% {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 18px rgba(255, 210, 120, 0.65));
+  }
+}
+
+.dragon {
+  position: relative;
+}
+
+.head {
+  position: relative;
+  width: 60px;
+  height: 50px;
+  background: linear-gradient(145deg, #d4af37, #b8860b);
+  border-radius: 60%;
+}
+
+.horn {
+  position: absolute;
+  top: -14px;
+  width: 6px;
+  height: 18px;
+  background: linear-gradient(to top, #d4af37, #f5d76e);
+  border-radius: 6px;
+}
+.horn.left { left: 12px; transform: rotate(-15deg); }
+.horn.right { right: 12px; transform: rotate(15deg); }
+
+.eye {
+  position: absolute;
+  top: 26px;
+  width: 6px;
+  height: 6px;
+  background: #2b1400;
+  border-radius: 50%;
+}
+.eye.left { left: 16px; }
+.eye.right { right: 16px; }
+
+.body {
+  position: absolute;
+  top: 38px;
+  left: 10px;
+  width: 40px;
+  height: 28px;
+  background: linear-gradient(145deg, #d4af37, #b8860b);
+  border-radius: 20px;
+}
+
+.arm {
+  position: absolute;
+  top: 50px;
+  left: 40px;
+  width: 26px;
+  height: 6px;
+  background: #f3c95c;
+  border-radius: 6px;
+  transform-origin: left center;
+  animation: rowArm 1.4s ease-in-out infinite;
+}
+@keyframes rowArm {
+  0%, 100% { transform: rotate(18deg); }
+  50% { transform: rotate(-22deg); }
+}
+
+.oar {
+  position: absolute;
+  left: 168px;
+  bottom: 20px;
+  width: 110px;
+  height: 6px;
+  background: linear-gradient(to right, #caa24a, #a07830);
+  border-radius: 6px;
+  transform-origin: left center;
+  animation: oarMove 1.4s ease-in-out infinite;
+}
+@keyframes oarMove {
+  0%, 100% { transform: rotate(10deg); }
+  50% { transform: rotate(-18deg); }
+}
+
+/* ── Speech bubble ── */
+.speech {
+  position: absolute;
+  right: 6%;
+  top: 18%;
+  width: clamp(260px, 86vw, 360px);
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  color: #111;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.speech::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 40px;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 14px solid rgba(255, 255, 255, 0.96);
+}
+.speech.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.speechTitle {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: #0b1c3a;
+  margin-bottom: 12px;
+}
+
+.facts {
+  padding-left: 18px;
+  margin-bottom: 14px;
+}
+.facts li {
+  margin-bottom: 6px;
+}
+
+.invite {
+  font-size: 14px;
+  color: #0b1c3a;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+/* ── Flight transition ── */
+.flightTransition {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #0a2a4f 0%, #04182f 40%, #000 75%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 1s ease;
+}
+.flightTransition.active {
+  opacity: 1;
+}
+
+.globe {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #6fd3ff, #0a3d66 60%);
+  transform: translate(-50%, -50%) scale(0);
+  box-shadow: 0 0 70px rgba(120, 200, 255, 0.6);
+  transition: transform 1.2s ease;
+}
+.flightTransition.active .globe {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.plane {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 4px;
+  background: #fff;
+  border-radius: 4px;
+  transform-origin: left center;
+  opacity: 0;
+}
+.flightTransition.active .plane {
+  opacity: 1;
+  animation: flyAround 1.2s ease-in-out forwards;
+}
+@keyframes flyAround {
+  0% { transform: translate(-50%, -50%) rotate(0deg) translateX(0); }
+  100% { transform: translate(-50%, -50%) rotate(300deg) translateX(140px); }
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .speech {
+    left: 50%;
+    right: auto;
+    top: 10svh;
+    transform: translateX(-50%) translateY(12px);
+    width: min(92vw, 360px);
+    font-size: 13px;
+  }
+  .speech.show {
+    transform: translateX(-50%) translateY(0);
+  }
+  .speech::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .boat {
+    left: 15%;
+    bottom: 32%;
+  }
+}
