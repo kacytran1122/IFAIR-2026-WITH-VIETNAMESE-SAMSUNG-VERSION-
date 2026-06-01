@@ -252,12 +252,13 @@ export default function Ending() {
     resize();
     restart();
 
-    window.addEventListener("resize", () => { resize(); restart(); }, { passive: true });
+    const handleResize = () => { resize(); restart(); };
+    window.addEventListener("resize", handleResize, { passive: true });
     window.addEventListener("click", restart, { passive: true });
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", restart);
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("click", restart);
     };
   }, [restart]);

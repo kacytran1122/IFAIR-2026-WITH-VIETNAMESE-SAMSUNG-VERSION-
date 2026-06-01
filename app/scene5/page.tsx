@@ -89,7 +89,10 @@ export default function Scene5() {
             <div className={`${styles.horn} ${styles.right}`} />
             <div className={`${styles.eye} ${styles.left}`} />
             <div className={`${styles.eye} ${styles.right}`} />
-            <div className={styles.snout} />
+            <div className={styles.snout}>
+            <div className={`${styles.nostril} ${styles.left}`} />
+            <div className={`${styles.nostril} ${styles.right}`} />
+          </div>
           </div>
           <div className={styles.fire} ref={fireRef} />
         </div>

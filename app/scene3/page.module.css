@@ -226,19 +226,26 @@
 /* ── Mobile ── */
 @media (max-width: 600px) {
   .memories {
-    top: 46%;
-    gap: 12px;
+    top: 44%;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 92vw;
+  }
+  .memory {
+    flex: 0 0 auto;
   }
   .memoryImg {
-    width: 100px !important;
-    height: 75px !important;
+    width: 78px !important;
+    height: 58px !important;
   }
   .caption {
-    font-size: 12px;
+    font-size: 11px;
+    margin-top: 6px;
   }
   .speech {
     left: 50%;
-    bottom: 32svh;
+    bottom: 28svh;
     width: min(92vw, 340px);
     transform: translateX(-50%) translateY(12px);
     font-size: 14px;
@@ -253,5 +260,15 @@
     border-width: 14px 12px 0 12px;
     border-style: solid;
     border-color: rgba(245, 250, 255, 0.97) transparent transparent transparent;
+  }
+}
+
+@media (max-width: 380px) {
+  .memoryImg {
+    width: 64px !important;
+    height: 48px !important;
+  }
+  .caption {
+    font-size: 10px;
   }
 }

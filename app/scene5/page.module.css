@@ -71,8 +71,8 @@
   transform: rotate(-12deg);
 }
 .horn.right {
-  left: 64%;
-  top: -26px;
+  right: 25%;
+  top: -30px;
   transform: rotate(12deg);
 }
 
@@ -102,24 +102,40 @@
   border-radius: 24px;
 }
 
+.nostril {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  background: #2a1008;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.nostril.left {
+  left: 22%;
+}
+.nostril.right {
+  right: 22%;
+}
+
 .fire {
   position: absolute;
-  right: 140px;
+  right: 125px;
   top: 88px;
   width: 0;
   height: 26px;
-  background: linear-gradient(270deg, #ffd84a, #ff8c00, #ff2d00);
+  background: linear-gradient(270deg, #fff7aa, #ffd84a, #ff8c00, #ff2d00);
   border-radius: 30px;
   filter: blur(2px);
   opacity: 0;
 }
 .fire.active {
-  animation: fireLeft 1.2s ease-out forwards;
+  animation: fireLeft 1.4s ease-out forwards;
 }
 @keyframes fireLeft {
   0% { width: 0; opacity: 0; }
-  15% { opacity: 1; }
-  100% { width: 460px; opacity: 0; }
+  10% { opacity: 1; }
+  100% { width: 500px; opacity: 0; }
 }
 
 /* ── Speech bubble ── */
@@ -262,17 +278,37 @@
   .dragonCenter {
     left: 50%;
     right: auto;
-    top: 18svh;
+    top: 16svh;
     transform: translateX(-50%);
     flex-direction: column;
     gap: 10px;
   }
   .dragon {
-    width: 130px;
-    height: 130px;
+    width: 140px;
+    height: 140px;
+  }
+  /* Scale head to fit the smaller dragon container */
+  .head {
+    width: 118px;
+    height: 100px;
+  }
+  .horn {
+    height: 34px;
+    width: 8px;
+  }
+  .horn.left {
+    top: -22px;
+  }
+  .horn.right {
+    top: -22px;
+  }
+  .snout {
+    width: 54px;
+    height: 32px;
   }
   .fire {
-    top: 58px;
+    right: 95px;
+    top: 68px;
   }
   .bubble {
     width: min(90vw, 320px);
@@ -281,10 +317,10 @@
   .container {
     grid-template-columns: 1fr;
     gap: 24px;
-    padding: 24svh 16px 20px;
+    padding: 30svh 16px 20px;
   }
   .tree {
-    font-size: clamp(13px, 3.5vw, 16px);
+    font-size: clamp(11px, 3vw, 15px);
     margin-top: 0;
   }
   .right {
@@ -292,7 +328,7 @@
     row-gap: 14px;
   }
   .foodImg {
-    width: 120px !important;
-    height: 88px !important;
+    width: 110px !important;
+    height: 82px !important;
   }
 }
