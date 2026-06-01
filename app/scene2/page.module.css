@@ -6,40 +6,38 @@
   height: 100svh;
   overflow: hidden;
   background: #05070f;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-/* ── Stands ── */
+/* ───── Stands ───── */
 .stands {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 33%;
+  height: 32%;
   background: linear-gradient(180deg, #1a2550 0%, #0b1020 100%);
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 8px 10px;
+  gap: 4px;
+  padding: 6px 8px;
   overflow: hidden;
 }
 
 .row {
   display: flex;
-  gap: 5px;
+  gap: 4px;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .fan {
-  width: 15px;
-  height: 27px;
+  width: 14px;
+  height: 26px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.2s ease;
 }
+
 .fanHead {
   width: 9px;
   height: 9px;
@@ -47,57 +45,70 @@
   border-radius: 50%;
   flex-shrink: 0;
 }
+
 .fanBody {
-  width: 13px;
-  height: 15px;
+  width: 12px;
+  height: 14px;
   background: #2a2a3a;
   border-radius: 3px;
   position: relative;
   flex-shrink: 0;
 }
+
 .fanBody::before,
 .fanBody::after {
   content: "";
   position: absolute;
   width: 4px;
-  height: 11px;
+  height: 10px;
   background: #2a2a3a;
-  top: -10px;
+  top: -9px;
   border-radius: 3px;
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity 0.12s ease;
 }
+
 .fan.cheer {
-  animation: jump 0.6s ease;
+  animation: jump 0.55s ease;
 }
 .fan.cheer .fanBody::before {
   left: -4px;
   opacity: 1;
-  transform: rotate(-30deg);
+  transform: rotate(-28deg);
 }
 .fan.cheer .fanBody::after {
   right: -4px;
   opacity: 1;
-  transform: rotate(30deg);
-}
-@keyframes jump {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-7px);
-  }
+  transform: rotate(28deg);
 }
 
-/* ── Field / Pitch ── */
+@keyframes jump {
+  0%, 100% { transform: translateY(0); }
+  40%       { transform: translateY(-8px); }
+}
+
+/* ───── Pitch ───── */
 .pitch {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 67%;
-  background: linear-gradient(180deg, #2d8a42 0%, #236832 100%);
+  height: 68%;
+  background: #2d8a42;
+  overflow: hidden;
+}
+
+/* alternating grass stripes */
+.grassStripes {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 0px,
+    rgba(0, 0, 0, 0.06) 60px,
+    transparent 60px,
+    transparent 120px
+  );
 }
 
 .centerLine {
@@ -106,7 +117,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.7);
   transform: translateX(-50%);
 }
 
@@ -114,179 +125,197 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 110px;
-  height: 110px;
-  border: 3px solid rgba(255, 255, 255, 0.65);
+  width: clamp(80px, 14vw, 140px);
+  height: clamp(80px, 14vw, 140px);
+  border: 3px solid rgba(255, 255, 255, 0.7);
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
 
+.centerDot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ───── Goal ───── */
 .goal {
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 110px;
-  height: 150px;
-  border: 4px solid rgba(255, 255, 255, 0.9);
+  width: clamp(70px, 10vw, 120px);
+  height: clamp(100px, 20vh, 170px);
+  border: 4px solid rgba(255, 255, 255, 0.95);
   border-right: none;
+  z-index: 2;
 }
 
 .net {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-  background-size: 15px 15px;
-  opacity: 0.6;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px);
+  background-size: 14px 14px;
 }
 
-/* ── Ball ── */
+.goalPost {
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  bottom: -4px;
+  width: 4px;
+  background: rgba(220, 220, 220, 0.4);
+}
+
+/* ───── Ball ───── */
 .ball {
   position: absolute;
   width: 22px;
   height: 22px;
-  background: radial-gradient(circle at 35% 35%, #fff, #ddd);
   border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #fff, #ddd 60%, #aaa);
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) translateX(0);
-  transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%);
+  transition: transform 0.95s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 3;
 }
 
-/* ── Players ── */
+/* ───── Players ───── */
 .player {
   position: absolute;
-  top: 55%;
+  top: 52%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 2;
 }
 
-.dragonPlayer {
-  left: 20%;
-}
-.pandaPlayer {
-  left: 58%;
-}
+.dragonPlayer { left: 18%; }
+.pandaPlayer  { left: 56%; }
 
 .face {
-  width: 60px;
-  height: 52px;
+  width: clamp(52px, 7vw, 70px);
+  height: clamp(46px, 6vw, 60px);
   border-radius: 50% 50% 40% 40%;
   position: relative;
 }
 
+/* Dragon face */
 .dragonFace {
   background: linear-gradient(145deg, #d4a017, #b8860b);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
 }
 .dragonFace::before,
 .dragonFace::after {
   content: "";
   position: absolute;
-  top: -22px;
+  top: -24px;
   width: 8px;
   height: 28px;
-  background: #f5d76e;
+  background: linear-gradient(to top, #d4a017, #f5d76e);
   border-radius: 5px;
 }
-.dragonFace::before {
-  left: 13px;
-}
-.dragonFace::after {
-  right: 13px;
+.dragonFace::before { left: 22%; }
+.dragonFace::after  { right: 22%; }
+
+/* Panda face */
+.pandaFace {
+  background: #f0f0f0;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-.pandaFace {
-  background: #f5f5f5;
-  border-radius: 50%;
-}
-.pandaFace::before,
-.pandaFace::after {
-  content: "";
+.earLeft,
+.earRight {
   position: absolute;
-  top: -10px;
-  width: 16px;
-  height: 16px;
+  top: -12px;
+  width: 18px;
+  height: 18px;
   background: #111;
   border-radius: 50%;
 }
-.pandaFace::before {
-  left: 7px;
-}
-.pandaFace::after {
-  right: 7px;
-}
+.earLeft  { left: 6px; }
+.earRight { right: 6px; }
 
+.patch {
+  position: absolute;
+  width: 16px;
+  height: 18px;
+  background: #111;
+  border-radius: 50%;
+  top: 36%;
+}
+.patchLeft  { left: 14%; }
+.patchRight { right: 14%; }
+
+/* Shared eyes */
 .eye {
   position: absolute;
-  top: 40%;
-  width: 6px;
-  height: 6px;
+  top: 38%;
+  width: 7px;
+  height: 7px;
   background: #2b1a0f;
   border-radius: 50%;
 }
-.eye.left {
-  left: 18px;
-}
-.eye.right {
-  right: 18px;
-}
+.eyeLeft  { left: 22%; }
+.eyeRight { right: 22%; }
 
 .snout {
   position: absolute;
   left: 50%;
-  bottom: 8px;
+  bottom: 10%;
   transform: translateX(-50%);
-  width: 32px;
-  height: 20px;
+  width: 52%;
+  height: 36%;
   background: #f3c969;
   border-radius: 14px;
 }
 
-.patch {
-  position: absolute;
-  width: 14px;
-  height: 16px;
-  background: #111;
-  border-radius: 50%;
-  top: 18px;
-}
-.patch.left {
-  left: 11px;
-}
-.patch.right {
-  right: 11px;
+.body {
+  width: clamp(28px, 4vw, 40px);
+  height: clamp(20px, 3vw, 28px);
+  background: #1a2a3a;
+  border-radius: 8px 8px 4px 4px;
+  margin-top: -3px;
 }
 
 .leg {
   width: 12px;
-  height: 30px;
+  height: 28px;
   background: #0a1a2a;
-  border-radius: 6px;
-  margin-top: -4px;
+  border-radius: 5px;
+  margin-top: -2px;
 }
 
-/* ── Story card ── */
+/* ───── Story card ───── */
 .story {
   position: absolute;
   left: 50%;
-  top: 6%;
-  transform: translateX(-50%);
-  width: min(90vw, 380px);
+  top: 5%;
+  transform: translateX(-50%) translateY(-10px);
+  width: min(88vw, 400px);
   padding: 20px 22px;
   background: rgba(255, 255, 255, 0.97);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
   border-radius: 22px;
   color: #1a1a2e;
   font-size: 14px;
-  line-height: 1.6;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  line-height: 1.65;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   opacity: 0;
-  transform: translateX(-50%) translateY(-12px);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  z-index: 20;
 }
 .story.show {
   opacity: 1;
@@ -305,10 +334,10 @@
   margin-bottom: 8px;
 }
 .story p:last-of-type {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
-/* ── CTA button ── */
+/* ───── CTA button ───── */
 .cta {
   display: block;
   width: 100%;
@@ -326,16 +355,16 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease;
 }
-.cta:hover {
-  transform: scale(1.02);
-}
+.cta:hover  { transform: scale(1.02); }
+.cta:active { transform: scale(0.98); }
+
 @keyframes rainbow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* ── Ball-expand transition ── */
+/* ───── Ball-expand transition ───── */
 .ballTransition {
   position: fixed;
   left: 50%;
@@ -343,28 +372,32 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff 35%, #000 36% 45%, #fff 46%);
+  background: radial-gradient(circle at 32% 32%, #fff 32%, #111 33% 48%, #fff 49%);
   transform: translate(-50%, -50%) scale(0);
   z-index: 9999;
   pointer-events: none;
-  transition: transform 0.7s cubic-bezier(0.6, 0, 0.2, 1);
+  transition: transform 0.75s cubic-bezier(0.55, 0, 0.2, 1);
 }
 .ballTransition.active {
-  transform: translate(-50%, -50%) scale(100);
+  /* 300 × 22px = 6600px — covers any viewport */
+  transform: translate(-50%, -50%) scale(300);
 }
 
-/* ── Mobile ── */
+/* ───── Mobile ───── */
 @media (max-width: 600px) {
+  .stands { height: 30%; }
+  .pitch  { height: 70%; }
+
   .goal {
-    width: 80px;
-    height: 120px;
+    width: 70px;
+    height: 110px;
   }
   .centerCircle {
     width: 80px;
     height: 80px;
   }
   .story {
-    top: 4%;
+    top: 3%;
     font-size: 13px;
     padding: 16px 18px;
   }
